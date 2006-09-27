@@ -34,7 +34,6 @@ grab:{count`SERVERS insert update lastz:.z.z,w:-1 from(x"delete from `SERVERS wh
 / after getting new servers run retry to open connections if you don't have \t'd <retry>
 retry:{update lastz:.z.z,w:@[hopen;;-1]peach hpup from`SERVERS where w=-1;}
 pc:{[result;arg] update w:-1,lastz:.z.z from`SERVERS where w=arg;result}
-\d .dotz
 .z.pc:{.servers.pc[x y;y]}.z.pc
 \d .
 if[not count select w from SERVERS where w=0,name=`servers;
