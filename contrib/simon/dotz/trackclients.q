@@ -18,6 +18,6 @@ po:{[result;arg]
 	result}   
 add:{po[x;x]} / manually add a client 
 pc:{[result;arg] delete from `CLIENTS where w=arg; result}
-\d .dotz
+
 .z.po:{.clients.po[x y;y]}.z.po
 .z.pc:{.clients.pc[x y;y]}.z.pc

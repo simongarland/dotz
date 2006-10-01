@@ -1,5 +1,6 @@
 / monitor external (.z.p*) usage of a kdb+ session to session table USAGE
 \l saveorig.q
+.dotz.TXTW:250
 if[not`USAGE in system"a";
 	USAGE:([]date:`date$();time:`time$();ms:`float$();zcmd:`symbol$();ipa:`symbol$();u:`symbol$();w:`int$();cmd:();ok:`boolean$();error:`symbol$());
 	USAGE:update `s#date from USAGE]
@@ -11,8 +12,7 @@ monitor:{[zcmd;endz;result;arg;startz] / record
 monitore:{[zcmd;endz;arg;error] / record error
 	if[LEVEL>0;`USAGE insert (`date$endz;`time$endz;0f;zcmd;.dotz.ipa .z.a;.z.u;.z.w;.dotz.txt[zcmd;arg];0b;`$error)];
 	'error}
-\d .dotz
-TXTW:250
+
 .z.pw:{.usage.monitor[`pw;.z.z;x[y;z];(y;"***");.z.z]}.z.pw
 .z.po:{.usage.monitor[`po;.z.z;x y;y;.z.z]}.z.po
 .z.pc:{.usage.monitor[`pc;.z.z;x y;y;.z.z]}.z.pc

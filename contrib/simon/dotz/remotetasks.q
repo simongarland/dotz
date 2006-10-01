@@ -16,7 +16,7 @@ nextgrp:{:.tasks.LASTGRP+:1}
 \d .tasks
 k)d2:{!/.+x} / dictionary from 2 columns
 
-xeq:{(neg .z.w)$[first result:@[{(1b;value x)};y;{(0b;x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
+xeq:{(neg .z.w)$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
 submitg:{[w;grp;expr] / ~ w expr
 	nr:COUNTER+:1;w:abs w;
 	`TASKS insert`nr`grp`startz`endz`w`ipa`status`expr`result!(nr;grp;.z.z;0Nz;w;`;`pending;expr;());
@@ -50,5 +50,4 @@ fail:{[nR;resulT]update result:resulT,status:`fail,endz:.z.z,ipa:.dotz.ipa .z.a 
 closew:{update status:`fail,endz:.z.z from`TASKS where status=`pending,w in x;x}
 pc:{[result;arg] closew arg;update w:0 from`TASKS where w=arg;result}
 
-\d .dotz
 .z.pc:{.tasks.pc[x y;y]}.z.pc
