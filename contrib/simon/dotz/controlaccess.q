@@ -16,13 +16,15 @@ VALIDHOSTPATTERNS:(string .Q.host .z.a;"127.0.0.1";"localhost");
 VALIDCMDPATTERNS:("select*";"count*");
 STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`USERS;
 VALIDCMDSYMBOLS:`symbol$();
+.dotz.TXTW:150
+
+.q.likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
+words:{`$1_'(where not x in .Q.an)_ x:" ",x}
 
 validuser:{[zu;pu;su]$[su;exec any(`,zu)in u from USERS where superuser;$[pu;exec any(`,zu)in u from USERS where poweruser or superuser;exec any(`,zu)in u from USERS]]}
 superuser:validuser[;0b;1b];poweruser:validuser[;1b;0b];defaultuser:validuser[;0b;0b]
 loginvalid:{[ok;zcmd;cmd]	
 	if[not ok;H enlist(`LOADINVALIDACCESS;`INVALIDACCESS;(.z.z;zcmd;.z.a;.z.w;.z.u;.dotz.txt[zcmd;cmd]))];ok}
-.q.likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
-words:{`$1_'(where not x in .Q.an)_ x:" ",x}
 validhost:{[za](.dotz.ipa za)likeany VALIDHOSTPATTERNS}
 validcmd:{[u;cmd]
 	if[superuser u;:1b];
@@ -41,9 +43,8 @@ adduser:{[u;pu;su]USERS,:(u;pu;su);}
 addsuperuser:adduser[;0b;1b];addpoweruser:adduser[;1b;0b];adddefaultuser:adduser[;0b;0b]
 deleteusers:{delete from`.access.USERS where u in x;}
 
-addsuperuser .z.u;adddefaultuser `;
-.dotz.TXTW:150
-
+addsuperuser .z.u / task owner is superuser
+adddefaultuser ` / allow anonymous users
 \d .
 @[value;"\\l controlaccess.custom.q";::]
 
