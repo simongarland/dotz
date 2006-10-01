@@ -1,6 +1,8 @@
 / load invalid access via (.z.p*) from logfile into INVALIDACCESS
+/ q loadinvalidaccess.q / for default filename or from controlaccess.custom.q
+/ q loadinvalidaccess.q FILENAME / to override default 
 \l saveorig.q 
-t:@[value;"\\l customaccess.custom.q";::]
+t:@[value;"\\l controlaccess.custom.q";::]
 o:.Q.opt .z.x;if[count .Q.x;.access.FILE:hsym`${x[where"\\"=x]:"/";x}first .Q.x]  
 INVALIDACCESS:([]z:`datetime$();zcmd:`symbol$();a:`int$();w:`int$();u:`symbol$();cmd:())
 LOADINVALIDACCESS:insert
