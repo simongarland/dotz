@@ -44,6 +44,7 @@ deleteusers:{delete from`.access.USERS where u in x;}
 addsuperuser .z.u;adddefaultuser `;
 .dotz.TXTW:150
 
+\d .
 @[value;"\\l controlaccess.custom.q";::]
 
 / if file doesn't exist create and initialise it
