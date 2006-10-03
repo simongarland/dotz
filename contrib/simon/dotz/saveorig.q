@@ -7,8 +7,8 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	ipa:{$[`~r:IPA x;IPA[x]:$[`~r:.Q.host x;`$"."sv string"i"$0x0 vs x;r];r]}; 
 	.access.FILE:`:invalidaccess.log; .usage.FILE:`:usage.log;
 	.clients.INTRUSIVE:0b;
-	TXTW:50;
-	txt:{[zcmd;arg]$[TXTW>count arg:$[10=abs type arg;$[zcmd in`ph`pp;.h.uh arg;arg];-3!arg];arg;(15#arg),"..",(17-TXTW)#arg]};
+	txt:{[width;zcmd;arg]$[width>count arg:$[10=abs type arg;$[zcmd in`ph`pp;.h.uh arg;arg];-3!arg];arg;(15#arg),"..",(17-width)#arg]};
+	txtc:txt[neg 60-last system"c"];txtC:txt[neg 60-last system"C"];
 	pzlist:` sv'`.z,' `pw`po`pc`pg`ps`pi`ph`pp;
 	.dotz.undef:pzlist where not @[{not(::)~value x};;0b] each pzlist;
 	.dotz.pw.ORIG:.z.pw:@[.:;`.z.pw;{{[x;y]1b}}];

@@ -5,5 +5,5 @@
 /.access.VALIDCMDPATTERNS:("select*";"count*");
 /.access.STOPWORDS:`delete`exit`access`insert`update`system;
 /.access.VALIDCMDSYMBOLS:`symbol$();
-.access.VALIDCMDSYMBOLS:`foo`goo;
-foo:{2+x};goo:{200+x}
+/.access.VALIDCMDSYMBOLS,:`report0`report1;
+

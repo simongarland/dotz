@@ -1,16 +1,15 @@
 / monitor external (.z.p*) usage of a kdb+ session to session table USAGE
 \l saveorig.q
-.dotz.TXTW:150
 if[not`USAGE in system"a";
 	USAGE:([]date:`date$();time:`time$();ms:`float$();zcmd:`symbol$();ipa:`symbol$();u:`symbol$();w:`int$();cmd:();ok:`boolean$();error:`symbol$());
 	USAGE:update `s#date from USAGE]
 busy:{update busypct:0^100*busyms%totalms from select busyms:sum ms,totalms:last ms+max time-min time by date,time.hh,u from USAGE where ok}
 \d .usage
 monitor:{[zcmd;endz;result;arg;startz] / record
-	if[LEVEL>1;`USAGE insert (`date$startz;`time$startz;86400000*endz-startz;zcmd;.dotz.ipa .z.a;.z.u;.z.w;.dotz.txt[zcmd;arg];1b;`)];
+	if[LEVEL>1;`USAGE insert (`date$startz;`time$startz;86400000*endz-startz;zcmd;.dotz.ipa .z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];1b;`)];
 	result}
 monitore:{[zcmd;endz;arg;error] / record error
-	if[LEVEL>0;`USAGE insert (`date$endz;`time$endz;0f;zcmd;.dotz.ipa .z.a;.z.u;.z.w;.dotz.txt[zcmd;arg];0b;`$error)];
+	if[LEVEL>0;`USAGE insert (`date$endz;`time$endz;0f;zcmd;.dotz.ipa .z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];0b;`$error)];
 	'error}
 
 .z.pw:{.usage.monitor[`pw;.z.z;x[y;z];(y;"***");.z.z]}.z.pw

@@ -1,12 +1,11 @@
 / trace external (.z.p*) usage of a kdb+ session to console
 \l saveorig.q	
-.dotz.TXTW:50
 \d .usage
 trace:{[zcmd;endz;result;arg;startz] / record
-	if[LEVEL>1;-1(" ",(string`date$startz)," ",(string`time$startz)," ",(string 86400000*endz-startz),"ms ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," ",.dotz.txt[zcmd;arg])];
+	if[LEVEL>1;-1(" ",(string`date$startz)," ",(string`time$startz)," ",(string 86400000*endz-startz),"ms ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," ",.dotz.txtc[zcmd;arg])];
 	result}
 tracee:{[zcmd;endz;arg;error] / record error
-	if[LEVEL>0;-1("*",(string`date$endz)," ",(string`time$endz)," (error:", error,") ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," ",.dotz.txt[zcmd;arg])];
+	if[LEVEL>0;-1("*",(string`date$endz)," ",(string`time$endz)," (error:", error,") ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," ",.dotz.txtc[zcmd;arg])];
 	'error}
 
 /.z.pw:{.usage.trace[`pw;.z.z;x[y;z];(y;z);.z.z]}.z.pw
