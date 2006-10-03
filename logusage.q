@@ -1,14 +1,13 @@
 / log external (.z.p*) usage of a kdb+ session to FILE
 / use <loadusage.q> to load and create table USAGE
 \l saveorig.q
-.dotz.TXTW:150
 @[value;"\\l logusage.custom.q";::];
 \d .usage
 track:{[zcmd;endz;result;arg;startz] / record
-	if[LEVEL>1;H enlist(`LOADUSAGE;`USAGE;(startz;endz;zcmd;.z.a;.z.u;.z.w;.dotz.txt[zcmd;arg];1b;`))];
+	if[LEVEL>1;H enlist(`LOADUSAGE;`USAGE;(startz;endz;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];1b;`))];
 	result}
 tracke:{[zcmd;endz;arg;error] / record error
-	if[LEVEL>0;H enlist(`LOADUSAGE;`USAGE;(endz;endz;zcmd;.z.a;.z.u;.z.w;.dotz.txt[zcmd;arg];0b;`$error))];
+	if[LEVEL>0;H enlist(`LOADUSAGE;`USAGE;(endz;endz;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];0b;`$error))];
 	'error}
 / if file doesn't exist create and initialise it
 if[()~key .usage.FILE;.[.usage.FILE;();:;()]]

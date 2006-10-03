@@ -14,9 +14,8 @@
 USERS:([u:`symbol$()]poweruser:`boolean$();superuser:`boolean$());
 VALIDHOSTPATTERNS:(string .Q.host .z.a;"127.0.0.1";"localhost");
 VALIDCMDPATTERNS:("select*";"count*");
-STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`USERS;
+STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`USERS`upsert`set;
 VALIDCMDSYMBOLS:`symbol$();
-.dotz.TXTW:150
 
 .q.likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
 words:{`$1_'(where not x in .Q.an)_ x:" ",x}
@@ -24,7 +23,7 @@ words:{`$1_'(where not x in .Q.an)_ x:" ",x}
 validuser:{[zu;pu;su]$[su;exec any(`,zu)in u from USERS where superuser;$[pu;exec any(`,zu)in u from USERS where poweruser or superuser;exec any(`,zu)in u from USERS]]}
 superuser:validuser[;0b;1b];poweruser:validuser[;1b;0b];defaultuser:validuser[;0b;0b]
 loginvalid:{[ok;zcmd;cmd]	
-	if[not ok;H enlist(`LOADINVALIDACCESS;`INVALIDACCESS;(.z.z;zcmd;.z.a;.z.w;.z.u;.dotz.txt[zcmd;cmd]))];ok}
+	if[not ok;H enlist(`LOADINVALIDACCESS;`INVALIDACCESS;(.z.z;zcmd;.z.a;.z.w;.z.u;.dotz.txtC[zcmd;cmd]))];ok}
 validhost:{[za](.dotz.ipa za)likeany VALIDHOSTPATTERNS}
 validcmd:{[u;cmd]
 	if[superuser u;:1b];
@@ -67,3 +66,4 @@ the maximum time a single interaction can take by setting command line parameter
 reserve memory at startup by doing something like:
 key 260000000 / to reserve 1GB     
 use .h.uh on http input if need to check for STOPWORDS etc 
+could use .z.po+.z.pc to track clients (.z.a+u+w, .z.z + active) - simplest is to use trackclients.q directly 
