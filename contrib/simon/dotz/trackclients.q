@@ -1,5 +1,5 @@
 / track active clients of a kdb+ session in session table CLIENTS
-/ commented versions are more intrusive, they go back asking for more background
+/ when INSTRUSIVE is true .z.po goes back asking for more background
 / use monitorusage.q or logusage.q if you need request by request info
 / pop - port at po time, _may_ have been changed by a subsequent \p  
 \l saveorig.q
