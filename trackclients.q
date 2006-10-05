@@ -13,8 +13,10 @@ handles:{exec w from value`CLIENTS}
 leaky:{$[INTRUSIVE;`nh xdesc select from(select nh:count i by h,pop from value`CLIENTS where not null pop) where nh>2;'`no.data]}
 po:{[result;arg]
 	`CLIENTS insert $[INTRUSIVE;
-		(arg;.dotz.ipa .z.a;.z.u;.z.a;@[arg;".z.k";0Nd];@[arg;".z.K";0n];@[arg;".z.o";(`)];@[arg;".z.f";(`)];.Q.host .z.a;@[arg;"\\p";0N];.z.z);
+		(arg;.dotz.ipa .z.a;.z.u;.z.a;0Nd;0n;(`);(`);.Q.host .z.a;0N;.z.z);
 		(arg;.dotz.ipa .z.a;.z.u;.z.a;.z.z)];
+	if[INTRUSIVE;
+		(neg arg)"(neg .z.w)\"update k:\",(string .z.k),\",K:\",(string .z.K),\",o:\",(-3!.z.o),\",f:\",(-3!.z.f),\",pop:\",(string system\"p\"),\" from`CLIENTS where w=.z.w\""];
 	result}   
 add:{po[x;x]} / manually add a client 
 pc:{[result;arg] delete from`CLIENTS where w=arg; result}
