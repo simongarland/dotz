@@ -6,6 +6,7 @@
 / setting .access.STOPWORDS - list of words that can't be used
 / setting .access.VALIDCMDSYMBOLS - list of allowed commands  
 / adding rows to .access.USERS for .z.u matches 
+/ modify the default values using file controlaccess.custom.q (loaded at end if found)
 / ordinary user can only run canned commands
 / poweruser can run (some) sql commands (select .. etc)
 / superuser can do anything
@@ -47,7 +48,7 @@ adddefaultuser ` / allow anonymous users
 \d .
 @[value;"\\l controlaccess.custom.q";::]
 
-/ if file doesn't exist create and initialise it
+/ if logfile doesn't exist create and initialise it
 if[()~key .access.FILE;.[.access.FILE;();:;()]]
 .access.H:hopen .access.FILE
 .z.pw:{$[.access.vpw[y;z];x[y;z];0b]}.z.pw 

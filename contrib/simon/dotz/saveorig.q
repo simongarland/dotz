@@ -2,11 +2,12 @@
 \d .dotz
 if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	SAVED.ORIG:1b;
-	.usage.LEVEL:2; / 0 - nothing; 1 - errors only; 2 - all
 	IPA:(enlist .z.a)!enlist .z.h;
 	ipa:{$[`~r:IPA x;IPA[x]:$[`~r:.Q.host x;`$"."sv string"i"$0x0 vs x;r];r]}; 
-	.access.FILE:`:invalidaccess.log; .usage.FILE:`:usage.log;
-	.clients.INTRUSIVE:0b;
+	.usage.LEVEL:@[.:;`.usage.LEVEL;2]; / 0 - nothing; 1 - errors only; 2 - all
+	.access.FILE:@[.:;`.access.FILE;`:invalidaccess.log];
+	.usage.FILE:@[.:;`.usage.FILE;`:usage.log];
+	.clients.INTRUSIVE:@[.:;`.clients.INTRUSIVE;0b];
 	txt:{[width;zcmd;arg]$[width>count arg:$[10=abs type arg;$[zcmd in`ph`pp;.h.uh arg;arg];-3!arg];arg;(15#arg),"..",(17-width)#arg]};
 	txtc:txt[neg 60-last system"c"];txtC:txt[neg 60-last system"C"];
 	pzlist:` sv'`.z,' `pw`po`pc`pg`ps`pi`ph`pp;
