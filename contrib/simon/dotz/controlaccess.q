@@ -18,19 +18,19 @@ VALIDCMDPATTERNS:("select*";"count*");
 STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`USERS`upsert`set;
 VALIDCMDSYMBOLS:`symbol$();
 
-.q.likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
+likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
 words:{`$1_'(where not x in .Q.an)_ x:" ",x}
 
 validuser:{[zu;pu;su]$[su;exec any(`,zu)in u from USERS where superuser;$[pu;exec any(`,zu)in u from USERS where poweruser or superuser;exec any(`,zu)in u from USERS]]}
 superuser:validuser[;0b;1b];poweruser:validuser[;1b;0b];defaultuser:validuser[;0b;0b]
 loginvalid:{[ok;zcmd;cmd]	
 	if[not ok;H enlist(`LOADINVALIDACCESS;`INVALIDACCESS;(.z.z;zcmd;.z.a;.z.w;.z.u;.dotz.txtC[zcmd;cmd]))];ok}
-validhost:{[za](.dotz.ipa za)likeany VALIDHOSTPATTERNS}
+validhost:{[za] likeany[.dotz.ipa za;VALIDHOSTPATTERNS]}
 validcmd:{[u;cmd]
 	if[superuser u;:1b];
 	tc:type cmd,:();fc:first cmd;
 	if[$[11h=tc;1b;(0h=tc)and -11h=type fc];:fc in VALIDCMDSYMBOLS];
-	$[poweruser u;$[not(any";{"in cmd)or any STOPWORDS in words cmd;cmd likeany VALIDCMDPATTERNS;0b];0b]}
+	$[poweruser u;$[not(any";{"in cmd)or any STOPWORDS in words cmd;likeany[cmd;VALIDCMDPATTERNS];0b];0b]}
 
 vpw:{[x;y]loginvalid[;`pw;x]$[defaultuser x;validhost .z.a;0b]}
 vpg:{loginvalid[;`pg;x]validcmd[.z.u;x]}
