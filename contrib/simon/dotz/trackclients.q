@@ -6,17 +6,17 @@
 t:@[value;"\\l trackclients.custom.q";::]
 if[not`CLIENTS in system"a";
 	CLIENTS:$[.clients.INTRUSIVE;
-		([w:`int$()]ipa:`symbol$();u:`symbol$();a:`int$();k:`date$();K:`float$();o:`symbol$();f:`symbol$();pop:`int$();poz:`datetime$());
+		([w:`int$()]ipa:`symbol$();u:`symbol$();a:`int$();k:`date$();K:`float$();o:`symbol$();f:`symbol$();pid:`int$();pop:`int$();poz:`datetime$());
 		([w:`int$()]ipa:`symbol$();u:`symbol$();a:`int$();poz:`datetime$())]]
 \d .clients
 handles:{exec w from value`CLIENTS}
-leaky:{$[INTRUSIVE;`nh xdesc select from(select nh:count i by ipa,pop from value`CLIENTS where not null pop) where nh>2;'`no.data]}
+leaky:{$[INTRUSIVE;`nh xdesc select from(select nh:count i by ipa,pid from value`CLIENTS where not null pop) where nh>2;'`no.data]}
 po:{[result;arg]
 	`CLIENTS insert $[INTRUSIVE;
-		(arg;.dotz.ipa .z.a;.z.u;.z.a;0Nd;0n;(`);(`);0N;.z.z);
+		(arg;.dotz.ipa .z.a;.z.u;.z.a;0Nd;0n;(`);(`);0N;0N;.z.z);
 		(arg;.dotz.ipa .z.a;.z.u;.z.a;.z.z)];
 	if[INTRUSIVE;
-		(neg arg)"(neg .z.w)\"update k:\",(string .z.k),\",K:\",(string .z.K),\",o:\",(-3!.z.o),\",f:\",(-3!.z.f),\",pop:\",(string system\"p\"),\" from`CLIENTS where w=.z.w\""];
+		(neg arg)"(neg .z.w)\"update k:\",(string .z.k),\",K:\",(string .z.K),\",o:\",(-3!.z.o),\",f:\",(-3!.z.f),\",pid:\",(string .z.i),\",pop:\",(string system\"p\"),\" from`CLIENTS where w=.z.w\""];
 	result}   
 add:{po[x;x]} / manually add a client 
 pc:{[result;arg] delete from`CLIENTS where w=arg; result}
