@@ -8,8 +8,8 @@ INVALIDACCESS:([]z:`datetime$();zcmd:`symbol$();a:`int$();w:`int$();u:`symbol$()
 LOADINVALIDACCESS:insert
 tmp:-11!.access.FILE
 ip:{`$"."sv string"i"$0x0 vs x}
-INVALIDACCESS:`z xasc update cmd:`$cmd,date:z.date,time:z.time,ipa:.Q.fu[ip']a from INVALIDACCESS
+INVALIDACCESS:`z xasc update cmd:`$cmd,date:z.date,time:z.time,ipa:.Q.fu[ip']a,host:.Q.fu[.Q.host']a from INVALIDACCESS
 INVALIDACCESS:update `s#date from INVALIDACCESS
 if[1=count distinct exec date from INVALIDACCESS;INVALIDACCESS:update `s#time from INVALIDACCESS]
-INVALIDACCESS:select date,time,zcmd,ipa,u,w,cmd from INVALIDACCESS
+INVALIDACCESS:select date,time,zcmd,ipa,host,u,w,cmd from INVALIDACCESS
 show(neg first system"c")sublist INVALIDACCESS

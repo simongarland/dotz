@@ -25,7 +25,7 @@ validuser:{[zu;pu;su]$[su;exec any(`,zu)in u from USERS where superuser;$[pu;exe
 superuser:validuser[;0b;1b];poweruser:validuser[;1b;0b];defaultuser:validuser[;0b;0b]
 loginvalid:{[ok;zcmd;cmd]	
 	if[not ok;H enlist(`LOADINVALIDACCESS;`INVALIDACCESS;(.z.z;zcmd;.z.a;.z.w;.z.u;.dotz.txtC[zcmd;cmd]))];ok}
-validhost:{[za] likeany[.dotz.ipa za;VALIDHOSTPATTERNS]}
+validhost:{[za] $[likeany[.dotz.ipa za;VALIDHOSTPATTERNS];1b;likeany["."sv string"i"$0x0 vs za;VALIDHOSTPATTERNS]]}
 validcmd:{[u;cmd]
 	if[superuser u;:1b];
 	tc:type cmd,:();fc:first cmd;
