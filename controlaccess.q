@@ -12,14 +12,14 @@
 / superuser can do anything
 \l saveorig.q
 \d .access
-USERS:([u:`symbol$()]poweruser:`boolean$();superuser:`boolean$());
-VALIDHOSTPATTERNS:(string .Q.host .z.a;"127.0.0.1";"localhost");
-VALIDCMDPATTERNS:("select*";"count*");
-STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`USERS`upsert`set;
-VALIDCMDSYMBOLS:`symbol$();
+USERS:([u:`symbol$()]poweruser:`boolean$();superuser:`boolean$())
+VALIDHOSTPATTERNS:distinct(string .z.h;string .Q.host .z.a;"127.0.0.1";"localhost")except enlist""
+VALIDCMDPATTERNS:("select*";"count*")
+STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`USERS`upsert`set
+VALIDCMDSYMBOLS:`favicon.ico`,tables`.
 
 likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
-words:{`$1_'(where not x in .Q.an)_ x:" ",x}
+words:{`$1_'(where not x in .Q.an,"./")_ x:" ",x}
 
 validuser:{[zu;pu;su]$[su;exec any(`,zu)in u from USERS where superuser;$[pu;exec any(`,zu)in u from USERS where poweruser or superuser;exec any(`,zu)in u from USERS]]}
 superuser:validuser[;0b;1b];poweruser:validuser[;1b;0b];defaultuser:validuser[;0b;0b]
@@ -28,15 +28,15 @@ loginvalid:{[ok;zcmd;cmd]
 validhost:{[za] $[likeany[.dotz.ipa za;VALIDHOSTPATTERNS];1b;likeany["."sv string"i"$0x0 vs za;VALIDHOSTPATTERNS]]}
 validcmd:{[u;cmd]
 	if[superuser u;:1b];
-	tc:type cmd,:();fc:first cmd;
-	if[$[11h=tc;1b;(0h=tc)and -11h=type fc];:fc in VALIDCMDSYMBOLS];
-	$[poweruser u;$[not(any";{"in cmd)or any STOPWORDS in words cmd;likeany[cmd;VALIDCMDPATTERNS];0b];0b]}
+	tc:type cmd,:();fc:first cmd;if[$[11h=tc;1b;(0h=tc)and -11h=type fc];:fc in VALIDCMDSYMBOLS];
+	wc:words cmd;if[poweruser u;:not(any";{"in cmd)or any STOPWORDS in wc];
+	(first wc)in VALIDCMDSYMBOLS}
 
 vpw:{[x;y]loginvalid[;`pw;x]$[defaultuser x;validhost .z.a;0b]}
 vpg:{loginvalid[;`pg;x]validcmd[.z.u;x]}
 vps:{loginvalid[;`ps;x]$[poweruser .z.u;validcmd[.z.u;x];0b]}
 vpi:{loginvalid[;`pi;x]$[0=.z.w;1b;superuser .z.u]}
-vph:{loginvalid[;`ph;x]$[poweruser .z.u;validcmd[.z.u;.h.uh x];0b]}
+vph:{loginvalid[;`ph;x]validcmd[.z.u;{("?"~first x)_ x}.h.uh$[.z.K>2.3;first x;x]]}
 vpp:{loginvalid[;`pp;x]superuser .z.u}
 
 adduser:{[u;pu;su]USERS,:(u;pu;su);}
@@ -57,8 +57,8 @@ if[()~key .access.FILE;.[.access.FILE;();:;()]]
 .z.pg:{$[.access.vpg[y];x y;'`access]}.z.pg
 .z.ps:{$[.access.vps[y];x y;'`access]}.z.ps
 .z.pi:{$[.access.vpi[y];x y;'`access]}.z.pi
-.z.ph:{$[.access.vph[y];x y;hclose .z.w]}.z.ph
-.z.pp:{$[.access.vpp[y];x y;hclose .z.w]}.z.pp
+.z.ph:{$[.access.vph[y];x y;"access denied"]}.z.ph
+.z.pp:{$[.access.vpp[y];x y;"access denied"]}.z.pp
 \
 note that you can put global restrictions on the amount of memory used, and
 the maximum time a single interaction can take by setting command line parameters:
