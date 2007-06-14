@@ -30,7 +30,7 @@ close:{update lastz:.z.z,w:@[{hclose x;-1};;-1]each w from`SERVERS where w>0,w i
 / load the servers from disk (csv file previously saved by savecsv)
 loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz from update hpup:hsym each hpup,w:-1,lastz:.z.z from ("SSB";enlist",")0:x}
 / or grab a valid list from another task 
-grab:{count`SERVERS insert update lastz:.z.z,w:-1 from(x"delete from`SERVERS where private")}
+grab:{count`SERVERS insert update lastz:.z.z,w:-1 from(x"select from SERVERS where not private")}
 / after getting new servers run retry to open connections if you don't have \t'd <retry>
 retry:{update lastz:.z.z,w:@[hopen;;-1]peach hpup from`SERVERS where w=-1;}
 pc:{[result;arg] update w:-1,lastz:.z.z from`SERVERS where w=arg;result}
