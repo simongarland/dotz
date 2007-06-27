@@ -15,7 +15,7 @@
 USERS:([u:`symbol$()]poweruser:`boolean$();superuser:`boolean$())
 VALIDHOSTPATTERNS:distinct(string .z.h;string .Q.host .z.a;"127.0.0.1";"localhost")except enlist""
 VALIDCMDPATTERNS:("select*";"count*")
-STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`USERS`upsert`set`VALIDHOSTPATTERNS`VALIDCMDPATTERNS`VALIDCMDSYMBOLS`STOPWORDS`adduser`addsuperuser`addpoweruser`.z.pw`.z.pg`.z.ps`.z.pi`.z.ph`.z.pp
+STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`.access.USERS`upsert`set`.access.VALIDHOSTPATTERNS`.access.VALIDCMDPATTERNS`.access.VALIDCMDSYMBOLS`.access.STOPWORDS`.access.adduser`.access.addsuperuser`.access.addpoweruser`.z.pw`.z.pg`.z.ps`.z.pi`.z.ph`.z.pp`USERS`access
 VALIDCMDSYMBOLS:`favicon.ico`,tables`.
 
 likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
