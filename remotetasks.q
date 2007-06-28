@@ -1,13 +1,11 @@
 / submit remote tasks, results get passed back to this task 
 \l saveorig.q	
-.tasks.RETAIN:5%24*60 / 5 minutes
-.tasks.AUTOCLEAN:1b / cleanup old records when fetching results 
 t:@[value;"\\l remotetasks.custom.q";::]      
-
 if[not`TASKS in system"a";
 	.tasks.COUNTER:0;
 	.tasks.LASTGRP:10000;
 	TASKS:([nr:`int$()]grp:`int$();startz:`datetime$();endz:`datetime$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();result:())]
+
 \d .taskgrps
 grps:{distinct exec grp from value`TASKS}
 nrsfor:{exec nr from value`TASKS where grp in x}

@@ -2,6 +2,7 @@
 / disable .z.pi as otherwise that's overwriting everything when you're trying to debug
 / (may want it for qcon though..)
 \l saveorig.q
+
 .z.pw:{r:x[y;z];if[.usage.LEVEL>1;.last.pw.when:.z.z;.last.zcmd:`pw;.last.pw.u:.z.u;.last.pw.w:.z.w;.last.pw.a:.z.a;.last.pw.x:x;.last.pw.y:y;.last.pw.z:z;.last.pw.r:r];r}.z.pw
 .z.po:{r:x y;if[.usage.LEVEL>1;.last.po.when:.z.z;.last.zcmd:`po;.last.po.u:.z.u;.last.po.w:.z.w;.last.po.a:.z.a;.last.po.x:x;.last.po.y:y;.last.po.r:r];r}.z.po
 .z.pc:{r:x y;if[.usage.LEVEL>1;.last.pc.when:.z.z;.last.zcmd:`pc;.last.pc.u:.z.u;.last.pc.w:.z.w;.last.pc.a:.z.a;.last.pc.x:x;.last.pc.y:y;.last.pc.r:r];r}.z.pc

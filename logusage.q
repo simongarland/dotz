@@ -2,6 +2,7 @@
 / use <loadusage.q> to load and create table USAGE
 \l saveorig.q
 @[value;"\\l logusage.custom.q";::];
+
 \d .usage
 track:{[zcmd;endz;result;arg;startz] / record
 	if[LEVEL>1;H enlist(`LOADUSAGE;`USAGE;(startz;endz;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];1b;`))];

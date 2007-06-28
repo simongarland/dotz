@@ -2,6 +2,7 @@
 \l saveorig.q
 if[not`SERVERS in system"a";
 	SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();private:`boolean$();lastz:`datetime$())]
+	
 \d .servers
 handlefor:{[namE] / roundrobin
 	if[not cr:count r:select w,lastz from value`SERVERS where w>0,name=namE;

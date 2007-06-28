@@ -11,6 +11,7 @@
 / poweruser can run VALIDCMDSYMBOLS and (some) sql commands (select .. etc -> VALIDCMDPATTERNS) 
 / superuser can do anything
 \l saveorig.q
+
 \d .access
 USERS:([u:`symbol$()]poweruser:`boolean$();superuser:`boolean$())
 VALIDHOSTPATTERNS:distinct(string .z.h;string .Q.host .z.a;"127.0.0.1";"localhost")except enlist""
