@@ -1,5 +1,6 @@
 / dump external (.z.p*) usage of a kdb+ session to console using 0N!
 \l saveorig.q
+
 /.z.pw:{0N!x[0N!y;0N!z]}.z.pw
 .z.pw:{0N!x[0N!y;z,0#0N!"***"]}.z.pw
 .z.po:{0N!x 0N!y}.z.po

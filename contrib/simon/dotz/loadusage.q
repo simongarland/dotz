@@ -3,6 +3,7 @@
 / q loadusage.q FILENAME / to override default 
 \l saveorig.q 
 t:@[value;"\\l logusage.custom.q";::]
+
 o:.Q.opt .z.x;if[count .Q.x;.usage.FILE:hsym`${x[where"\\"=x]:"/";x}first .Q.x]  
 USAGE:([]startz:`datetime$();endz:`datetime$();zcmd:`symbol$();a:`int$();u:`symbol$();w:`int$();cmd:();ok:`boolean$();error:`symbol$())
 LOADUSAGE:insert

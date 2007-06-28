@@ -6,4 +6,3 @@
 /.access.STOPWORDS:`delete`exit`access`insert`update`system;
 /.access.VALIDCMDSYMBOLS:`symbol$();
 /.access.VALIDCMDSYMBOLS,:`report0`report1;
-

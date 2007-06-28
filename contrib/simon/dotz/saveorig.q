@@ -8,6 +8,10 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	.access.FILE:@[.:;`.access.FILE;`:invalidaccess.log];
 	.usage.FILE:@[.:;`.usage.FILE;`:usage.log];
 	.clients.INTRUSIVE:@[.:;`.clients.INTRUSIVE;0b];
+	.clients.RETAIN:@[.:;`.clients.RETAIN;5%24*60]; / 5 minutes
+	.clients.AUTOCLEAN:@[.:;`.clients.AUTOCLEAN;1b]; / clean out old records when handling a close 
+	.tasks.RETAIN:@[.:;`.tasks.RETAIN;5%24*60]; / 5 minutes
+	.tasks.AUTOCLEAN:@[.:;`.tasks.AUTOCLEAN;1b]; / clean out old records when handling a close 
 	txt:{[width;zcmd;arg]t:$[10=abs type arg;arg;-3!arg];if[zcmd in`ph`pp;t:.h.uh t];$[width<count t;(15#t),"..",(17-width)#t;t]};
 	txtc:txt[neg 60-last system"c"];txtC:txt[neg 60-last system"C"];
 	pzlist:` sv'`.z,' `pw`po`pc`pg`ps`pi`ph`pp;
