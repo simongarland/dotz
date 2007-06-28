@@ -11,29 +11,29 @@ handlefor:{[namE] / roundrobin
 	W}
 names:{asc distinct exec name from value`SERVERS where w>0}
 handles:{distinct exec w from value`SERVERS where w>0}
-down:{distinct select name,hpup from value`SERVERS where w=-1}
+down:{distinct select name,hpup from value`SERVERS where null w}
 up:{distinct select name,hpup from value`SERVERS where w>0}
 self:{distinct select name,hpup from value`SERVERS where w=0}
 / save the list of servers currently in use to file x
 savecsv:{x 0:.h.cd select name,hpup,private from value`SERVERS;x}
 / force only one of each active name+hpup
-onlyone:{allw:exec w from value`SERVERS;okw:0 -1,exec w from select last w by name,hpup from value`SERVERS where w>0;
+onlyone:{allw:exec w from value`SERVERS;okw:0 0N,exec w from select last w by name,hpup from value`SERVERS where w>0;
 	dupw:allw except okw; delete from`SERVERS where w in dupw; @[hclose;;0]each dupw;
 	neg count dupw}
 / add a new server for current session 
-addp:{[namE;hpuP;privatE] `SERVERS insert(namE;hpuP;W:@[hopen;hpuP:hsym hpuP;-1];privatE;.z.z);W}
+addp:{[namE;hpuP;privatE] `SERVERS insert(namE;hpuP;W:@[hopen;hpuP:hsym hpuP;0N];privatE;.z.z);W}
 add:addp[;;0b]
 / clear table, doesn't close the handles - do reset close handles[] for that
 reset:init:{delete from`SERVERS}
 / close open handles - watchout if you have a \t'd <retry>!
-close:{update lastz:.z.z,w:@[{hclose x;-1};;-1]each w from`SERVERS where w>0,w in x;x}
+close:{update lastz:.z.z,w:@[{hclose x;0N};;0N]each w from`SERVERS where w>0,w in x;x}
 / load the servers from disk (csv file previously saved by savecsv)
-loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz from update hpup:hsym each hpup,w:-1,lastz:.z.z from ("SSB";enlist",")0:x}
+loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz from update hpup:hsym each hpup,w:0N,lastz:.z.z from ("SSB";enlist",")0:x}
 / or grab a valid list from another task 
-grab:{count`SERVERS insert update lastz:.z.z,w:-1 from(x"select from SERVERS where not private")}
+grab:{count`SERVERS insert update lastz:.z.z,w:0N from(x"select from SERVERS where not private")}
 / after getting new servers run retry to open connections if you don't have \t'd <retry>
-retry:{update lastz:.z.z,w:@[hopen;;-1]peach hpup from`SERVERS where w=-1;}
-pc:{[result;arg] update w:-1,lastz:.z.z from`SERVERS where w=arg;result}
+retry:{update lastz:.z.z,w:@[hopen;;0N]peach hpup from`SERVERS where null w;}
+pc:{[result;arg] update w:0N,lastz:.z.z from`SERVERS where w=arg;result}
 .z.pc:{.servers.pc[x y;y]}.z.pc
 \d .
 if[not count select w from SERVERS where w=0,name=`servers;
