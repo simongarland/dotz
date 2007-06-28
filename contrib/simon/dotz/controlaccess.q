@@ -31,7 +31,7 @@ validcmd:{[u;cmd]
 	/ now only default or poweruser
 	tc:type cmd,:();fc:first cmd;if[$[11h=tc;1b;(0h=tc)and -11h=type fc];:fc in VALIDCMDSYMBOLS];
 	wc:words cmd;
-	$[not(any$[pu:poweruser u;";{!";";{:!"]in cmd)or any STOPWORDS in wc;$[pu;likeany[cmd;VALIDCMDPATTERNS];(first wc)in VALIDCMDSYMBOLS];0b]}
+	$[not(any$[pu:poweruser u;";{!";";{:!"]in cmd)or any STOPWORDS in wc;$[(first wc)in VALIDCMDSYMBOLS;1b;$[pu;likeany[cmd;VALIDCMDPATTERNS];0b]];0b]}
 
 vpw:{[x;y]loginvalid[;`pw;x]$[defaultuser x;validhost .z.a;0b]}
 vpg:{loginvalid[;`pg;x]validcmd[.z.u;x]}
