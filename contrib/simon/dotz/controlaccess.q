@@ -7,15 +7,15 @@
 / setting .access.VALIDCMDSYMBOLS - list of allowed commands  
 / adding rows to .access.USERS for .z.u matches 
 / modify the default values using file controlaccess.custom.q (loaded at end if found)
-/ ordinary user can only run canned commands
-/ poweruser can run (some) sql commands (select .. etc)
+/ ordinary user can only run canned commands (VALIDCMDSYMBOLS)
+/ poweruser can run (some) sql commands (select .. etc -> VALIDCMDPATTERNS) 
 / superuser can do anything
 \l saveorig.q
 \d .access
 USERS:([u:`symbol$()]poweruser:`boolean$();superuser:`boolean$())
 VALIDHOSTPATTERNS:distinct(string .z.h;string .Q.host .z.a;"127.0.0.1";"localhost")except enlist""
 VALIDCMDPATTERNS:("select*";"count*")
-STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`.access.USERS`upsert`set`.access.VALIDHOSTPATTERNS`.access.VALIDCMDPATTERNS`.access.VALIDCMDSYMBOLS`.access.STOPWORDS`.access.adduser`.access.addsuperuser`.access.addpoweruser`.z.pw`.z.pg`.z.ps`.z.pi`.z.ph`.z.pp`USERS`access
+STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`.access.USERS`upsert`set`.access.VALIDHOSTPATTERNS`.access.VALIDCMDPATTERNS`.access.VALIDCMDSYMBOLS`.access.STOPWORDS`.access.adduser`.access.addsuperuser`.access.addpoweruser`.z.pw`.z.pg`.z.ps`.z.pi`.z.ph`.z.pp`USERS`access`.z
 VALIDCMDSYMBOLS:`favicon.ico`,tables`.
 
 likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
@@ -28,9 +28,10 @@ loginvalid:{[ok;zcmd;cmd]
 validhost:{[za] $[likeany[.dotz.ipa za;VALIDHOSTPATTERNS];1b;likeany["."sv string"i"$0x0 vs za;VALIDHOSTPATTERNS]]}
 validcmd:{[u;cmd]
 	if[superuser u;:1b];
+	/ now only default or poweruser
 	tc:type cmd,:();fc:first cmd;if[$[11h=tc;1b;(0h=tc)and -11h=type fc];:fc in VALIDCMDSYMBOLS];
-	wc:words cmd;if[poweruser u;:not(any";{"in cmd)or any STOPWORDS in wc];
-	(first wc)in VALIDCMDSYMBOLS}
+	wc:words cmd;
+	$[not(any$[pu:poweruser u;";{!";";{:!"]in cmd)or any STOPWORDS in wc;$[pu;likeany[cmd;VALIDCMDPATTERNS];(first wc)in VALIDCMDSYMBOLS];0b]}
 
 vpw:{[x;y]loginvalid[;`pw;x]$[defaultuser x;validhost .z.a;0b]}
 vpg:{loginvalid[;`pg;x]validcmd[.z.u;x]}
