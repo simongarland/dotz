@@ -1,5 +1,6 @@
 / track active servers of a kdb+ session in session table SERVERS
 \l saveorig.q
+t:@[value;"\\l trackservers.custom.q";::]
 if[not`SERVERS in system"a";
 	SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();private:`boolean$();lastz:`datetime$())]
 	
