@@ -1,6 +1,5 @@
 / track active servers of a kdb+ session in session table SERVERS
 \l saveorig.q
-t:@[value;"\\l trackservers.custom.q";::]
 if[not`SERVERS in system"a";
 	SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();private:`boolean$();lastz:`datetime$())]
 	
@@ -23,7 +22,7 @@ onlyone:{allw:exec w from value`SERVERS;okw:0 0N,exec w from select last w by na
 	dupw:allw except okw; delete from`SERVERS where w in dupw; @[hclose;;0]each dupw;
 	neg count dupw}
 / add a new server for current session 
-addp:{[namE;hpuP;privatE] `SERVERS insert(namE;hpuP;W:@[hopen;hpuP:hsym hpuP;0N];privatE;.z.z);W}
+addp:{[namE;hpuP;privatE] `SERVERS insert(namE;hpuP;W:@[{hopen(x;.servers.HOPENTIMEOUT)};hpuP:hsym hpuP;0N];privatE;.z.z);W}
 add:addp[;;0b]
 / clear table, doesn't close the handles - do reset close handles[] for that
 reset:init:{delete from`SERVERS}
@@ -34,7 +33,7 @@ loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz from update hpup:
 / or grab a valid list from another task 
 grab:{count`SERVERS insert update lastz:.z.z,w:0N from(x"select from SERVERS where not private")}
 / after getting new servers run retry to open connections if you don't have \t'd <retry>
-retry:{update lastz:.z.z,w:@[hopen;;0N]peach hpup from`SERVERS where null w;}
+retry:{update lastz:.z.z,w:@[{hopen(x;.servers.HOPENTIMEOUT)};;0N]peach hpup from`SERVERS where null w;}
 pc:{[result;arg] update w:0N,lastz:.z.z from`SERVERS where w=arg;result}
 .z.pc:{.servers.pc[x y;y]}.z.pc
 \d .
