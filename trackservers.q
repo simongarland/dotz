@@ -42,4 +42,4 @@ if[not count select w from SERVERS where w=0,name=`servers;
 / if no other timer then go fishing for lost servers every 5 minutes 
 if[not system"t";
 	.z.ts:{.servers.retry[]};
-	system"t ",string prd 5 60 1000]
+	system"t ",string .servers.RETRY]
