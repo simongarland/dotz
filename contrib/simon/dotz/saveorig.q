@@ -11,6 +11,7 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	.clients.RETAIN:@[.:;`.clients.RETAIN;5%24*60]; / 5 minutes
 	.clients.AUTOCLEAN:@[.:;`.clients.AUTOCLEAN;1b]; / clean out old records when handling a close 
 	.servers.HOPENTIMEOUT:@[.:;`.servers.HOPENTIMEOUT;500]; / half a second timeout  
+	.servers.RETRY:@[.:;`.servers.RETRY;prd 5 60 1000]; / 5 minutes  
 	.tasks.RETAIN:@[.:;`.tasks.RETAIN;5%24*60]; / 5 minutes
 	.tasks.AUTOCLEAN:@[.:;`.tasks.AUTOCLEAN;1b]; / clean out old records when handling a close 
 	@[value;"\\l saveorig.custom.q";::];
