@@ -13,12 +13,12 @@ grp:{[grP;nR] update grp:grP from`TASKS where nr in nR;nR}
 nextgrp:{:.tasks.LASTGRP+:1}
 \d .tasks
 k)d2:{!/.+x} / dictionary from 2 columns
+submitgxeq:{(neg .z.w)$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
 
-xeq:{(neg .z.w)$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
 submitg:{[w;grp;expr] / ~ w expr
 	nr:COUNTER+:1;w:abs w;
 	`TASKS insert`nr`grp`startz`endz`w`ipa`status`expr`result!(nr;grp;.z.z;0Nz;w;`;`pending;expr;());
-	(neg w)(xeq;nr;expr);nr}    
+	(neg w)(submitgxeq;nr;expr);nr}    
 submit:{[w;expr] submitg[w;.taskgrps.nextgrp[];expr]}
 results:{r:d2 select nr,result from value`TASKS where status=`complete,nr in x;
 	if[AUTOCLEAN; delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN];
@@ -42,10 +42,12 @@ reset:{delete from`TASKS;}
 clean:{delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN;}
 
 / callbacks
-complete:{[nR;resulT]update result:resulT,endz:.z.z,status:`complete,ipa:.dotz.ipa .z.a from`TASKS where nr=nR;}
-fail:{[nR;resulT]update result:resulT,status:`fail,endz:.z.z,ipa:.dotz.ipa .z.a from`TASKS where status=`pending,nr=nR;}
 
 closew:{update status:`fail,endz:.z.z from`TASKS where status=`pending,w in x;x}
 pc:{[result;arg] closew arg;update w:0 from`TASKS where w=arg;result}
+
+\d .
+.tasks.complete:{[nR;resulT] TASKS::update result:resulT,endz:.z.z,status:`complete,ipa:.dotz.ipa .z.a from TASKS where nr=nR;}
+.tasks.fail:{[nR;resulT] TASKS::update result:resulT,status:`fail,endz:.z.z,ipa:.dotz.ipa .z.a from TASKS where status=`pending,nr=nR;}
 
 .z.pc:{.tasks.pc[x y;y]}.z.pc
