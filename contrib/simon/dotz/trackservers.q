@@ -26,6 +26,8 @@ addp:{[namE;hpuP;privatE] `SERVERS insert(namE;hpuP;W:@[{hopen(x;.servers.HOPENT
 add:addp[;;0b]
 / clear table, doesn't close the handles - do reset close handles[] for that
 reset:init:{delete from`SERVERS}
+/ clean up dead handles
+clean:{delete from`SERVERS where null w;}
 / close open handles - watchout if you have a \t'd <retry>!
 close:{update lastz:.z.z,w:@[{hclose x;0N};;0N]each w from`SERVERS where w>0,w in x;x}
 / load the servers from disk (csv file previously saved by savecsv)
