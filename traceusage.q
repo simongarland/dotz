@@ -2,11 +2,12 @@
 \l saveorig.q	
 
 \d .usage
+red:$[.z.o in `w32`w64;{x};{"\033[1;41m",x,"\033[0m"}]
 trace:{[zcmd;endz;result;arg;startz] / record
 	if[LEVEL>1;-1(" ",(string`date$startz)," ",(string`time$startz)," ",(string 86400000*endz-startz),"ms ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," ",.dotz.txtc[zcmd;arg])];
 	result}
 tracee:{[zcmd;endz;arg;error] / record error
-	if[LEVEL>0;-1("*",(string`date$endz)," ",(string`time$endz)," (error:", error,") ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," ",.dotz.txtc[zcmd;arg])];
+	if[LEVEL>0;-1 red("*",(string`date$endz)," ",(string`time$endz)," (error:", error,") ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," ",.dotz.txtc[zcmd;arg])];
 	'error}
 
 /.z.pw:{.usage.trace[`pw;.z.z;x[y;z];(y;z);.z.z]}.z.pw
