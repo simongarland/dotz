@@ -13,12 +13,12 @@ grp:{[grP;nR] update grp:grP from`TASKS where nr in nR;nR}
 nextgrp:{:.tasks.LASTGRP+:1}
 \d .tasks
 k)d2:{!/.+x} / dictionary from 2 columns
-submitgxeq:{(neg .z.w)$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
+submitgXEQ:{(neg .z.w)$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
 
 submitg:{[w;grp;expr] / ~ w expr
 	nr:COUNTER+:1;w:abs w;
 	`TASKS insert`nr`grp`startz`endz`w`ipa`status`expr`result!(nr;grp;.z.z;0Nz;w;`;`pending;expr;());
-	(neg w)(submitgxeq;nr;expr);nr}    
+	(neg w)(submitgXEQ;nr;expr);nr}    
 submit:{[w;expr] submitg[w;.taskgrps.nextgrp[];expr]}
 results:{r:d2 select nr,result from value`TASKS where status=`complete,nr in x;
 	if[AUTOCLEAN; delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN];
