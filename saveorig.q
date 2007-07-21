@@ -7,6 +7,7 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	.usage.LEVEL:@[.:;`.usage.LEVEL;2]; / 0 - nothing; 1 - errors only; 2 - all
 	.access.FILE:@[.:;`.access.FILE;`:invalidaccess.log];
 	.usage.FILE:@[.:;`.usage.FILE;`:usage.log];
+	.usage.EXPENSIVE:@[.:;`.usage.EXPENSIVE;1000]; / expensive executon is coloured in traceusage.q
 	.clients.INTRUSIVE:@[.:;`.clients.INTRUSIVE;0b];
 	.clients.RETAIN:@[.:;`.clients.RETAIN;5%24*60]; / 5 minutes
 	.clients.AUTOCLEAN:@[.:;`.clients.AUTOCLEAN;1b]; / clean out old records when handling a close 
