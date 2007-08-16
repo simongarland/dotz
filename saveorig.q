@@ -16,6 +16,7 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	.tasks.RETAIN:@[.:;`.tasks.RETAIN;5%24*60]; / 5 minutes
 	.tasks.AUTOCLEAN:@[.:;`.tasks.AUTOCLEAN;1b]; / clean out old records when handling a close 
 	@[value;"\\l saveorig.custom.q";::];
+	fsw:{first system"w"};
 	txt:{[width;zcmd;arg]t:$[10=abs type arg;arg;-3!arg];if[zcmd in`ph`pp;t:.h.uh t];$[width<count t;(15#t),"..",(17-width)#t;t]};
 	txtc:txt[neg 60-last system"c"];txtC:txt[neg 60-last system"C"];
 	pzlist:` sv'`.z,' `pw`po`pc`pg`ps`pi`ph`pp;
