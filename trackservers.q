@@ -7,7 +7,8 @@ if[not`SERVERS in system"a";
 handlefor:{[namE] / roundrobin
 	if[not cr:count r:select w,lastz from value`SERVERS where w>0,name=namE;
 		'(`)sv namE,`not`available];
-	W:exec first w from`lastz xasc r;
+	if[cr>1;r:`lastz xasc r];
+	W:exec first w from r;
 	update lastz:.z.z from`SERVERS where w=W;
 	W}
 names:{asc distinct exec name from value`SERVERS where w>0}
@@ -22,8 +23,25 @@ onlyone:{allw:exec w from value`SERVERS;okw:0 0N,exec w from select last w by na
 	dupw:allw except okw; delete from`SERVERS where w in dupw; @[hclose;;0]each dupw;
 	neg count dupw}
 / add a new server for current session 
-addp:{[namE;hpuP;privatE] `SERVERS insert(namE;hpuP;W:@[{hopen(x;.servers.HOPENTIMEOUT)};hpuP:hsym hpuP;0N];privatE;.z.z);W}
-add:addp[;;0b]
+addnhwp:{[namE;hpuP;W;privatE] `SERVERS insert(namE;hpuP;W;privatE;.z.z);W}
+addnhp:{[namE;hpuP;privatE] 
+	W:@[{hopen(x;.servers.HOPENTIMEOUT)};hpuP:hsym hpuP;0N];
+	addnhwp[namE;hpuP;W;privatE]}
+addnh:addp[;;0b]
+/ add session behind a handle
+addwp:{[W;privatE]
+	info:`f`h`port!(@[W;"(.z.f;.z.h;system\"p\")";((`);(`);0N)]);
+	if[$[0N~info`port;1b;(`)~info`f];'`unknown];
+	namE:`$last"/"vs string info`f; 
+	hpuP:hsym`$(string info`h),":",string info`port; 
+	addnhwp[namE;hpuP;W;privatE]}
+addw:addwp[;0b]
+addnwp:{[namE;W;privatE]
+	info:`h`port!(@[W;"(.z.h;system\"p\")";((`);0N)]);
+	if[0N~info`port;'`unknown];
+	hpuP:hsym`$(string info`h),":",string info`port; 
+	addnhwp[namE;hpuP;W;privatE]}
+addnw:addnwp[;;0b]
 / clear table, doesn't close the handles - do reset close handles[] for that
 reset:init:{delete from`SERVERS}
 / clean up dead handles
