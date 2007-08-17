@@ -32,7 +32,7 @@ addnh:addp[;;0b]
 addwp:{[W;privatE]
 	info:`f`h`port!(@[W;"(.z.f;.z.h;system\"p\")";((`);(`);0N)]);
 	if[$[0N~info`port;1b;(`)~info`f];'`unknown];
-	namE:`$last"/"vs string info`f; 
+	namE:`$last("/"vs string info`f)except enlist""; 
 	hpuP:hsym`$(string info`h),":",string info`port; 
 	addnhwp[namE;hpuP;W;privatE]}
 addw:addwp[;0b]
