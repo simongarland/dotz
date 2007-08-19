@@ -2,7 +2,7 @@
 \d .dotz
 if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	SAVED.ORIG:1b;
-	IPA:(enlist .z.a)!enlist .z.h;
+	IPA:(enlist .z.a)!enlist `$"."sv string"i"$0x0 vs .z.a;
 	ipa:{$[`~r:IPA x;IPA[x]:$[`~r:.Q.host x;`$"."sv string"i"$0x0 vs x;r];r]}; 
 	.usage.LEVEL:@[.:;`.usage.LEVEL;2]; / 0 - nothing; 1 - errors only; 2 - all
 	.access.FILE:@[.:;`.access.FILE;`:invalidaccess.log];
