@@ -2,8 +2,8 @@
 \l saveorig.q	
 t:@[value;"\\l remotetasks.custom.q";::]      
 if[not`TASKS in system"a";
-	.tasks.COUNTER:0;
-	.tasks.LASTGRP:10000;
+	.tasks.COUNTER:10000;
+	.tasks.LASTGRP:20000;
 	TASKS:([nr:`int$()]grp:`int$();startz:`datetime$();endz:`datetime$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();result:())]
 
 \d .taskgrps
