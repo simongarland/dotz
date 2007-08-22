@@ -58,7 +58,7 @@ pc:{[result;arg] update w:0N,lastz:.z.z from`SERVERS where w=arg;result}
 .z.pc:{.servers.pc[x y;y]}.z.pc
 \d .
 if[not count select w from SERVERS where w=0,name=`servers;
-	.servers.addnh[`servers;hsym`$":"sv string(.dotz.ipa .z.a;system"p")]]
+	.servers.addnhwp[`servers;hsym`$":"sv string(.dotz.ipa .z.a;system"p");0;1b]]
 / if no other timer then go fishing for lost servers every 5 minutes 
 if[not system"t";
 	.z.ts:{.servers.retry[]};
