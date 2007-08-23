@@ -1,7 +1,7 @@
 / track active servers of a kdb+ session in session table SERVERS
 \l saveorig.q
 if[not`SERVERS in system"a";
-	SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();private:`boolean$();lastz:`datetime$())]
+	SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();hits:`int$();private:`boolean$();lastz:`datetime$())]
 	
 \d .servers
 handlefor:{[namE] / roundrobin
@@ -9,7 +9,7 @@ handlefor:{[namE] / roundrobin
 		'(`)sv namE,`not`available];
 	if[cr>1;r:`lastz xasc r];
 	W:exec first w from r;
-	update lastz:.z.z from`SERVERS where w=W;
+	update lastz:.z.z,hits:1+hits from`SERVERS where w=W;
 	W}
 names:{asc distinct exec name from value`SERVERS where w>0}
 handles:{distinct exec w from value`SERVERS where w>0}
@@ -23,7 +23,7 @@ onlyone:{allw:exec w from value`SERVERS;okw:0 0N,exec w from select last w by na
 	dupw:allw except okw; delete from`SERVERS where w in dupw; @[hclose;;0]each dupw;
 	neg count dupw}
 / add a new server for current session 
-addnhwp:{[namE;hpuP;W;privatE] `SERVERS insert(namE;hpuP;W;privatE;.z.z);W}
+addnhwp:{[namE;hpuP;W;privatE] `SERVERS insert(namE;hpuP;W;0;privatE;.z.z);W}
 addnhp:{[namE;hpuP;privatE] 
 	W:@[{hopen(x;.servers.HOPENTIMEOUT)};hpuP:hsym hpuP;0N];
 	addnhwp[namE;hpuP;W;privatE]}
@@ -49,7 +49,7 @@ clean:{delete from`SERVERS where null w;}
 / close open handles - watchout if you have a \t'd <retry>!
 close:{update lastz:.z.z,w:@[{hclose x;0N};;0N]each w from`SERVERS where w>0,w in x;x}
 / load the servers from disk (csv file previously saved by savecsv)
-loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz from update hpup:hsym each hpup,w:0N,lastz:.z.z from ("SSB";enlist",")0:x}
+loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz from update hpup:hsym each hpup,w:0N,hits:0,lastz:.z.z from ("SSB";enlist",")0:x}
 / or grab a valid list from another task 
 grab:{count`SERVERS insert update lastz:.z.z,w:0N from(x"select from SERVERS where not private")}
 / after getting new servers run retry to open connections if you don't have \t'd <retry>
