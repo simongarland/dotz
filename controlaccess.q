@@ -19,7 +19,8 @@ VALIDCMDPATTERNS:("select*";"count*")
 STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`.access.USERS`upsert`set`.access.VALIDHOSTPATTERNS`.access.VALIDCMDPATTERNS`.access.VALIDCMDSYMBOLS`.access.STOPWORDS`.access.adduser`.access.addsuperuser`.access.addpoweruser`.z.pw`.z.pg`.z.ps`.z.pi`.z.ph`.z.pp`USERS`access`.z`parse`eval`.q.parse`.q.eval`.q.system
 VALIDCMDSYMBOLS:`favicon.ico`,tables`.
 
-likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
+/ likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
+likeany:{0b{$[x;x;y like z]}[;x;]/y}
 words:{`$1_'(where not x in .Q.an,"./")_ x:" ",x}
 
 validuser:{[zu;pu;su]$[su;exec any(`,zu)in u from USERS where superuser;$[pu;exec any(`,zu)in u from USERS where poweruser or superuser;exec any(`,zu)in u from USERS]]}
