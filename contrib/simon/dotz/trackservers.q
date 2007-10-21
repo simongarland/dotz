@@ -4,7 +4,7 @@ if[not`SERVERS in system"a";
 	SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();hits:`int$();private:`boolean$();lastz:`datetime$())]
 	
 \d .servers
-handlefor:{[namE] / roundrobin
+h4:handlefor:{[namE] / roundrobin
 	if[not cr:count r:select w,lastz from value`SERVERS where w>0,name=namE;
 		'(`)sv namE,`not`available];
 	if[cr>1;r:`lastz xasc r];
