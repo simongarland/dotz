@@ -4,8 +4,8 @@ mywhois:{`k`K`o`f`h`pid`port`w!(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system"p";0)}
 hwhois:{`k`K`o`f`h`pid`port`w!(@[x;"(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system\"p\")";(0Nd;0n;(`);(`);(`);0N;0N)],x:abs x)}
 /hvalid:{@[{not 0b~@[neg x;"";0b]};x;0b]}
 hvalid:{(::)~@[neg abs x;"";0b]}
-/hkill:{@[{x"\\\\"};x;{"rcv: An existing c"~18#x}]}
-hkill:{@[{(neg x)"\\\\";1b};x;{not": The handle is in"~18#x}]} / kill the task at the other end of a handle 
+/hkill:{@[{x"\\\\"};x;{"close"~5#x}]}
+hkill:{@[{(neg x)"\\\\";1b};x;{not": Bad file descriptor"~21#x}]} / kill the task at the other end of a handle 
 htzoffset:{floor 0.5+24*neg .z.z-x".z.Z"} / server timezone offset for handle
 / execute[handles;cmd]
 hdsx0:{{x[]}each{(neg x)({(neg .z.w)value x};y);x}[;y]each x,()} / deferred sync execute, no traps
