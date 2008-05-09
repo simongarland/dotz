@@ -1,7 +1,7 @@
 myhp:{`$raze":",'string(.z.h;system"p")} / my `:host:port 
 hhp:{`$raze":",'string(@[x;".z.h";(`)];@[x:abs x;"\\p";0N])} / `:host:port for handle 
-mywhois:{`k`K`o`f`h`pid`port`w!(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system"p";0)}
-hwhois:{`k`K`o`f`h`pid`port`w!(@[x;"(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system\"p\")";(0Nd;0n;(`);(`);(`);0N;0N)],x:abs x)}
+mywhois:{`k`K`o`f`h`pid`port`s`w!(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system"p";system"s";0)}
+hwhois:{`k`K`o`f`h`pid`port`s`w!(@[x;"(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system\"p\";system\"s\")";(0Nd;0n;(`);(`);(`);0N;0N;0N)],x:abs x)}
 /hvalid:{@[{not 0b~@[neg x;"";0b]};x;0b]}
 hvalid:{(::)~@[neg abs x;"";0b]}
 /hkill:{@[{x"\\\\"};x;{"close"~5#x}]}
