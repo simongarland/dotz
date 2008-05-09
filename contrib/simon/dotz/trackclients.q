@@ -13,7 +13,7 @@ if[not`CLIENTS in system"a";
 handles:{exec w from value`CLIENTS where not null w}
 leaky:{$[INTRUSIVE;`nh xdesc select from(select nh:count i by ipa,pid from value`CLIENTS where not null pop,null pcz) where nh>2;'`no.data]}
 po:{[result;arg]
-	`CLIENTS insert $[INTRUSIVE;
+	`CLIENTS upsert $[INTRUSIVE;
 		(arg;.dotz.ipa .z.a;.z.u;.z.a;0Nd;0n;(`);(`);0N;0N;.z.z;0Nz);
 		(arg;.dotz.ipa .z.a;.z.u;.z.a;.z.z;0Nz)];
 	if[INTRUSIVE;

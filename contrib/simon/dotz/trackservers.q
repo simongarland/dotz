@@ -56,6 +56,7 @@ grab:{count`SERVERS insert update lastz:.z.z,w:0N from(x"select from SERVERS whe
 retry:{update lastz:.z.z,w:@[{hopen(x;.servers.HOPENTIMEOUT)};;0N]peach hpup from`SERVERS where null w;}
 pc:{[result;arg] update w:0N,lastz:.z.z from`SERVERS where w=arg;result}
 .z.pc:{.servers.pc[x y;y]}.z.pc
+.z.exit:{if[not y;.servers.savecsv`:trackservers.csv];x y;}.z.exit
 \d .
 if[not count select w from SERVERS where w=0,name=`servers;
 	.servers.addnhwp[`servers;hsym`$":"sv string(.dotz.ipa .z.a;system"p");0;1b]]

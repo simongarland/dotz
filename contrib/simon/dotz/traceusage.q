@@ -15,6 +15,7 @@ tracee:{[zcmd;endz;arg;error] / record error
 .z.pw:{.usage.trace[`pw;0j;.z.z;x[y;z];(y;"***");.z.z;0]}.z.pw
 .z.po:{.usage.trace[`po;0j;.z.z;x y;y;.z.z;0]}.z.po
 .z.pc:{.usage.trace[`pc;0j;.z.z;x y;y;.z.z;0]}.z.pc
+.z.exit:{.usage.trace[`exit;0j;.z.z;x y;y;.z.z;0]}.z.exit
 .z.pg:{.usage.trace[`pg;.dotz.fsw[];.z.z;@[x;y;.usage.tracee[`pg;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.pg
 .z.ps:{.usage.trace[`ps;.dotz.fsw[];.z.z;@[x;y;.usage.tracee[`ps;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.ps
 .z.pi:{.usage.trace[`pi;.dotz.fsw[];.z.z;@[x;y;.usage.tracee[`pi;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.pi

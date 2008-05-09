@@ -21,3 +21,4 @@ if[()~key .usage.FILE;.[.usage.FILE;();:;()]]
 .z.pi:{.usage.track[`pi;.dotz.fsw[];.z.z;@[x;y;.usage.tracke[`pi;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.pi
 .z.ph:{.usage.track[`ph;.dotz.fsw[];.z.z;@[x;y;.usage.tracke[`ph;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.ph
 .z.pp:{.usage.track[`pp;.dotz.fsw[];.z.z;@[x;y;.usage.tracke[`pp;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.pp
+.z.exit:{.usage.track[`exit;0j;.z.z;x y;y;.z.z]}.z.exit
