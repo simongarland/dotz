@@ -19,7 +19,7 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	fsw:{first system"w"};
 	txt:{[width;zcmd;arg]t:$[10=abs type arg;arg;-3!arg];if[zcmd in`ph`pp;t:.h.uh t];$[width<count t;(15#t),"..",(17-width)#t;t]};
 	txtc:txt[neg 60-last system"c"];txtC:txt[neg 60-last system"C"];
-	pzlist:` sv'`.z,'`pw`po`pc`pg`ps`pi`ph`pp;
+	pzlist:` sv'`.z,'`pw`po`pc`pg`ps`pi`ph`pp`exit;
 	.dotz.undef:pzlist where not @[{not(::)~value x};;0b] each pzlist;
 	.dotz.pw.ORIG:.z.pw:@[.:;`.z.pw;{{[x;y]1b}}];
 	.dotz.po.ORIG:.z.po:@[.:;`.z.po;{;}];
