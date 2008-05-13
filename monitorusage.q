@@ -13,11 +13,12 @@ monitore:{[zcmd;endz;arg;error] / record error
 	if[LEVEL>0;`USAGE insert (`date$endz;`time$endz;0f;0;zcmd;.dotz.ipa .z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];0b;`$error)];
 	'error}
 
-.z.pw:{.usage.monitor[`pw;0j;.z.z;x[y;z];(y;"***");.z.z;0]}.z.pw
-.z.po:{.usage.monitor[`po;0j;.z.z;x y;y;.z.z;0]}.z.po
-.z.pc:{.usage.monitor[`pc;0j;.z.z;x y;y;.z.z;0]}.z.pc
-.z.pg:{.usage.monitor[`pg;.dotz.fsw[];.z.z;@[x;y;.usage.monitore[`pg;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.pg
-.z.ps:{.usage.monitor[`ps;.dotz.fsw[];.z.z;@[x;y;.usage.monitore[`ps;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.ps
-.z.pi:{.usage.monitor[`pi;.dotz.fsw[];.z.z;@[x;y;.usage.monitore[`pi;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.pi
-.z.ph:{.usage.monitor[`ph;.dotz.fsw[];.z.z;@[x;y;.usage.monitore[`ph;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.ph
-.z.pp:{.usage.monitor[`pp;.dotz.fsw[];.z.z;@[x;y;.usage.monitore[`pp;.z.z;y;]];y;.z.z;.dotz.fsw[]]}.z.pp
+.z.pw:  {.usage.monitor[`pw  ;0j         ;.z.z;x[y;z]                              ;(y;"***");.z.z;0j]}         .z.pw
+.z.po:  {.usage.monitor[`po  ;0j         ;.z.z;x y                                 ;y        ;.z.z;0j]}         .z.po
+.z.pc:  {.usage.monitor[`pc  ;0j         ;.z.z;x y                                 ;y        ;.z.z;0j]}         .z.pc
+.z.pg:  {.usage.monitor[`pg  ;.dotz.fsw[];.z.z;@[x;y ;.usage.monitore[`pg;.z.z;y;]];y        ;.z.z;.dotz.fsw[]]}.z.pg
+.z.ps:  {.usage.monitor[`ps  ;.dotz.fsw[];.z.z;@[x;y ;.usage.monitore[`ps;.z.z;y;]];y        ;.z.z;.dotz.fsw[]]}.z.ps
+.z.pi:  {.usage.monitor[`pi  ;.dotz.fsw[];.z.z;@[x;y ;.usage.monitore[`pi;.z.z;y;]];y        ;.z.z;.dotz.fsw[]]}.z.pi
+.z.ph:  {.usage.monitor[`ph  ;.dotz.fsw[];.z.z;@[x;y ;.usage.monitore[`ph;.z.z;y;]];y        ;.z.z;.dotz.fsw[]]}.z.ph
+.z.pp:  {.usage.monitor[`pp  ;.dotz.fsw[];.z.z;@[x;y ;.usage.monitore[`pp;.z.z;y;]];y        ;.z.z;.dotz.fsw[]]}.z.pp
+.z.exit:{.usage.monitor[`exit;0j         ;.z.z;x y                                 ;y        ;.z.z;0j]}         .z.exit
