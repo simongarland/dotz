@@ -19,8 +19,9 @@ self:{distinct select name,hpup from value`SERVERS where w=0}
 / save the list of servers currently in use to file x
 savecsv:{x 0:.h.cd select name,hpup,private from value`SERVERS;x}
 / force only one of each active name+hpup
-onlyone:{allw:exec w from value`SERVERS;okw:0 0N,exec w from select last w by name,hpup from value`SERVERS where w>0;
-	dupw:allw except okw; delete from`SERVERS where w in dupw; @[hclose;;0]each dupw;
+onlyone:{oki:exec x from select last i by name,hpup from value`SERVERS;
+	@[hclose;;0]each dupw:exec w from value`SERVERS where w>0,not i in oki; 
+	delete from`SERVERS where not i in oki;
 	neg count dupw}
 / add a new server for current session 
 addnhwp:{[namE;hpuP;W;privatE] `SERVERS insert(namE;hpuP;W;0;privatE;.z.z);W}
@@ -49,9 +50,9 @@ clean:{delete from`SERVERS where null w;}
 / close open handles - watchout if you have a \t'd <retry>!
 close:{update lastz:.z.z,w:@[{hclose x;0N};;0N]each w from`SERVERS where w>0,w in x;x}
 / load the servers from disk (csv file previously saved by savecsv)
-loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz from update hpup:hsym each hpup,w:0N,hits:0,lastz:.z.z from ("SSB";enlist",")0:x}
+loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz,hits from update hpup:hsym each hpup,w:0N,hits:0,lastz:.z.z from ("SSB";enlist",")0:x}
 / or grab a valid list from another task 
-grab:{count`SERVERS insert update lastz:.z.z,w:0N from(x"select from SERVERS where not private")}
+grab:{count`SERVERS insert update lastz:.z.z,w:0N,hits:0 from(x"select from SERVERS where not private")}
 / after getting new servers run retry to open connections if you don't have \t'd <retry>
 retry:{update lastz:.z.z,w:@[{hopen(x;.servers.HOPENTIMEOUT)};;0N]peach hpup from`SERVERS where null w;}
 pc:{[result;arg] update w:0N,lastz:.z.z from`SERVERS where w=arg;result}
