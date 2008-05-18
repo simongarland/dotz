@@ -4,7 +4,7 @@ if[not`SERVERS in system"a";
 	SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();hits:`int$();private:`boolean$();lastz:`datetime$())]
 	
 \d .servers
-h4:handlefor:{[namE] / roundrobin
+handlefor:{[namE] / roundrobin
 	if[not cr:count r:select w,lastz from value`SERVERS where w>0,name=namE;
 		'(`)sv namE,`not`available];
 	if[cr>1;r:`lastz xasc r];
@@ -45,20 +45,23 @@ addnwp:{[namE;W;privatE]
 addnw:addnwp[;;0b]
 / clear table, doesn't close the handles - do reset close handles[] for that
 reset:init:{delete from`SERVERS}
-/ clean up dead handles
+/ check for valid handles
+validate:{update lastz:.z.z,w:{$[{@[{(::)~(neg x)""};x;0b]}x;x;0N]}each w from`SERVERS where not null w;update hits:0 from`SERVERS where null w;}
+/ clean up records for dead handles
 clean:{delete from`SERVERS where null w;}
 / close open handles - watchout if you have a \t'd <retry>!
-close:{update lastz:.z.z,w:@[{hclose x;0N};;0N]each w from`SERVERS where w>0,w in x;x}
+close:{update hits:0,lastz:.z.z,w:@[{hclose x;0N};;0N]each w from`SERVERS where w>0,w in x;x}
 / load the servers from disk (csv file previously saved by savecsv)
 loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz,hits from update hpup:hsym each hpup,w:0N,hits:0,lastz:.z.z from ("SSB";enlist",")0:x}
 / or grab a valid list from another task 
 grab:{count`SERVERS insert update lastz:.z.z,w:0N,hits:0 from(x"select from SERVERS where not private")}
 / after getting new servers run retry to open connections if you don't have \t'd <retry>
-retry:{update lastz:.z.z,w:@[{hopen(x;.servers.HOPENTIMEOUT)};;0N]peach hpup from`SERVERS where null w;}
-pc:{[result;arg] update w:0N,lastz:.z.z from`SERVERS where w=arg;result}
+retry:{update hits:0,lastz:.z.z,w:@[{hopen(x;.servers.HOPENTIMEOUT)};;0N]peach hpup from`SERVERS where null w;}
+pc:{[result;arg] update hits:0,w:0N,lastz:.z.z from`SERVERS where w=arg;result}
 .z.pc:{.servers.pc[x y;y]}.z.pc
 .z.exit:{if[not y;.servers.savecsv`:trackservers.csv];x y;}.z.exit
 \d .
+h4:.servers.handlefor
 if[not count select w from SERVERS where w=0,name=`servers;
 	.servers.addnhwp[`servers;hsym`$":"sv string(.dotz.ipa .z.a;system"p");0;1b]]
 / if no other timer then go fishing for lost servers every 5 minutes 
