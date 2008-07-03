@@ -17,7 +17,7 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	.usage.LEVEL:@[.:;`.usage.LEVEL;2]; / 0 - nothing; 1 - errors only; 2 - all	
 	@[value;"\\l saveorig.custom.q";::];
 	fsw:{first system"w"};
-	txt:{[width;zcmd;arg]t:$[10=abs type arg;arg;-3!arg];if[zcmd in`ph`pp;t:.h.uh t];$[width<count t;(15#t),"..",(17-width)#t;t]};
+	txt:{[width;zcmd;arg]t:$[10=abs type arg;arg;-3!arg];if[zcmd in`ph`pp;t:.h.uh t];$[width<count t:t except"\n";(15#t),"..",(17-width)#t;t]};
 	txtc:txt[neg 60-last system"c"];txtC:txt[neg 60-last system"C"];
 	pzlist:` sv'`.z,'`pw`po`pc`pg`ps`pi`ph`pp`exit;
 	.dotz.undef:pzlist where not @[{not(::)~value x};;0b] each pzlist;
@@ -30,6 +30,5 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	.dotz.pi.ORIG:.z.pi:@[.:;`.z.pi;{{.Q.s value x}}];
 	.dotz.ph.ORIG:.z.ph; / .z.ph is defined in q.k
 	.dotz.pp.ORIG:.z.pp:@[.:;`.z.pp;{;}]; / (poststring;postbody)
-	revert:{.z.pw:.dotz.pw.ORIG;.z.po:.dotz.po.ORIG;.z.pc:.dotz.pc.ORIG;.z.pg:.dotz.pg.ORIG;.z.ps:.dotz.ps.ORIG;.z.pi:.dotz.pi.ORIG;.z.ph:.dotz.ph.ORIG;.z.pp:.dotz.pp.ORIG;.dotz.SAVED.ORIG:0b;.z.exit:.dotz.exit.ORIG;
-		if[.z.K>2.3;{system"x ",string x}each .dotz.undef];}
+	revert:{.z.pw:.dotz.pw.ORIG;.z.po:.dotz.po.ORIG;.z.pc:.dotz.pc.ORIG;.z.pg:.dotz.pg.ORIG;.z.ps:.dotz.ps.ORIG;.z.pi:.dotz.pi.ORIG;.z.ph:.dotz.ph.ORIG;.z.pp:.dotz.pp.ORIG;.dotz.SAVED.ORIG:0b;.z.exit:.dotz.exit.ORIG;}
 	]
