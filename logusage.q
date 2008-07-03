@@ -15,7 +15,7 @@ logError:{[id;endz;error] / fill in error info
 / if logfile doesn't exist create and initialise it
 if[()~key FILE;.[FILE;();:;()]]
 H:hopen FILE;HJ:hcount FILE
-nextid:{:.usage.HJ+:1}
+nextid:{:HJ+:1}
 
 p0:{[x;y;z;a]logDirect[nextid[];`pw;0j;.z.z;y[z;a];(z;"***");.z.z;0j]}
 p1:{logDirect[nextid[];x;0j;.z.z;y z;z;.z.z;0j]}
