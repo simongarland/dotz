@@ -39,7 +39,7 @@ vpw:{[x;y]loginvalid[;`pw;x]$[defaultuser x;validhost .z.a;0b]}
 vpg:{loginvalid[;`pg;x]validcmd[.z.u;x]}
 vps:{loginvalid[;`ps;x]$[poweruser .z.u;validcmd[.z.u;x];0b]}
 vpi:{loginvalid[;`pi;x]$[0=.z.w;1b;superuser .z.u]}
-vph:{loginvalid[;`ph;x]validcmd[.z.u;{("?"~first x)_ x}.h.uh$[.z.K>2.3;first x;x]]}
+vph:{loginvalid[;`ph;x]validcmd[.z.u;{("?"~first x)_ x}.h.uh first x]}
 vpp:{loginvalid[;`pp;x]superuser .z.u}
 
 adduser:{[u;pu;su]USERS,:(u;pu;su);}
