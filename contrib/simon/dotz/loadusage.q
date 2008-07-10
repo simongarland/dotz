@@ -16,10 +16,10 @@ USAGE:update `s#date,`g#zcmd from USAGE
 if[1=count distinct exec date from USAGE;USAGE:update `s#time from USAGE]
 /USAGE:select date,time,ms,mdelta,zcmd,ipa,host,u,w,cmd,ok,error,exited:(not ok)and null endz,data from USAGE
 USAGE:select date,time,ms,mdelta,zcmd,ipa,host,u,w,ok,error,exited:null endz,cmd,data from USAGE
-EXITED::select date,time,zcmd,ipa,host,u,w,error,cmd from USAGE where exited
-EXPENSIVE::`totalms xdesc select totalms,numcalls,cmd from 0!select totalms:sum ms,numcalls:count i by cmd from USAGE  
+EXITED::select indx:i,date,time,zcmd,ipa,host,u,w,error,cmd from USAGE where exited
+EXPENSIVE::`totalms xdesc select totalms,avgms,numcalls,cmd from(0!select totalms:sum ms,avgms:avg ms,numcalls:count i by cmd from USAGE)where totalms>1  
 show(neg first system"c")sublist USAGE
 
 \
 to create a -11!able logfile just pick out the data column:
-`:mylogfile.log set exec first data from USAGE where date=.z.d,time within 09:00 10:00,zcmd in`pg`ps
+`:mylogfile.log set exec first each data from USAGE where date=.z.d,time within 09:00 10:00,zcmd in`pg`ps
