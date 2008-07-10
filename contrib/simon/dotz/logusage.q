@@ -22,6 +22,6 @@ p1:{logDirect[nextid[];x;0j;.z.z;y z;z;.z.z;0j]}
 p2:{id:nextid[];logBefore[id;x;z;.z.z];logAfter[id;.dotz.fsw[];.z.z;@[y;z;logError[id;.z.z;]];.z.z;.dotz.fsw[]]}
 
 .z.pw:p0[`pw;.z.pw;;]
-.z.po:p1[`po;.z.po;];.z.pc:p1[`pc;.z.pc;];.z.exit:p1[`exit;.z.exit;]
-.z.pg:p2[`pg;.z.pg;];.z.ps:p2[`ps;.z.ps;];.z.pi:p2[`pi;.z.pi;];.z.ph:p2[`ph;.z.ph;];.z.pp:p2[`pp;.z.pp;]
+.z.po:p1[`po;.z.po;];.z.pc:p1[`pc;.z.pc;]
+.z.exit:p2[`exit;.z.exit;];.z.pg:p2[`pg;.z.pg;];.z.ps:p2[`ps;.z.ps;];.z.pi:p2[`pi;.z.pi;];.z.ph:p2[`ph;.z.ph;];.z.pp:p2[`pp;.z.pp;]
  

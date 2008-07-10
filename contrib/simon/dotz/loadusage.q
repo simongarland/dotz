@@ -11,8 +11,15 @@ LA:{x upsert`id`ok`startz`endz`startw`endw!y}
 LE:{x upsert`id`ok`endz`error!y}
 tmp:-11!.usage.FILE
 ip:{`$"."sv string"i"$0x0 vs x}
-USAGE:`startz xasc update cmd:`$cmd,date:startz.date,time:startz.time,ms:0^86400000*endz-startz,mdelta:floor .001*endw-startw,ipa:.Q.fu[ip']a,host:.Q.fu[.Q.host']a from 0!USAGE
-USAGE:update `s#date from USAGE
+USAGE:`id`startz xasc update cmd:`$cmd,date:startz.date,time:startz.time,ms:0^86400000*endz-startz,mdelta:floor .001*endw-startw,ipa:.Q.fu[ip']a,host:.Q.fu[.Q.host']a from 0!USAGE
+USAGE:update `s#date,`g#zcmd from USAGE
 if[1=count distinct exec date from USAGE;USAGE:update `s#time from USAGE]
-USAGE:select date,time,ms,mdelta,zcmd,ipa,host,u,w,cmd,ok,error,exited:(not ok)and null endz,data from USAGE
+/USAGE:select date,time,ms,mdelta,zcmd,ipa,host,u,w,cmd,ok,error,exited:(not ok)and null endz,data from USAGE
+USAGE:select date,time,ms,mdelta,zcmd,ipa,host,u,w,ok,error,exited:null endz,cmd,data from USAGE
+EXITED::select date,time,zcmd,ipa,host,u,w,error,cmd from USAGE where exited
+EXPENSIVE::`totalms xdesc select totalms,numcalls,cmd from 0!select totalms:sum ms,numcalls:count i by cmd from USAGE  
 show(neg first system"c")sublist USAGE
+
+\
+to create a -11!able logfile just pick out the data column:
+`:mylogfile.log set exec data from USAGE where date=.z.d,time within 09:00 10:00,zcmd in`pg`ps
