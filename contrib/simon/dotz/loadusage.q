@@ -22,4 +22,4 @@ show(neg first system"c")sublist USAGE
 
 \
 to create a -11!able logfile just pick out the data column:
-`:mylogfile.log set exec data from USAGE where date=.z.d,time within 09:00 10:00,zcmd in`pg`ps
+`:mylogfile.log set exec first data from USAGE where date=.z.d,time within 09:00 10:00,zcmd in`pg`ps
