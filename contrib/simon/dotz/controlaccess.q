@@ -49,7 +49,7 @@ deleteusers:{delete from`.access.USERS where u in x;}
 addsuperuser .z.u / task owner is superuser
 adddefaultuser ` / allow anonymous users with default access
 \d .
-@[value;"\\l controlaccess.custom.q";::]
+@[value;"\\l controlaccess.custom.q";::];
 
 / if logfile doesn't exist create and initialise it
 if[()~key .access.FILE;.[.access.FILE;();:;()]]

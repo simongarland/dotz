@@ -1,6 +1,6 @@
 / submit remote tasks, results get passed back to this task 
 \l saveorig.q	
-t:@[value;"\\l remotetasks.custom.q";::]      
+@[value;"\\l remotetasks.custom.q";::];      
 if[not`TASKS in system"a";
 	.tasks.COUNTER:10000;
 	.tasks.LASTGRP:20000;
