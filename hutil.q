@@ -9,7 +9,7 @@ mywhois:{`k`K`o`f`h`pid`port`s`q`ro`w!(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system"p";s
 / hvalid:{@[{not 0b~@[neg x;"";0b]};x;0b]}
 / hvalid:{(::)~@[neg abs x;"";0b]}
 hvalid:{(abs x)in key .z.W}
-hall:{key .z.W}}
+hall:{key .z.W}
 hclogged:{where .z.W>0}
 /hkill:{@[{x"\\\\"};x;{"close"~5#x}]}
 hkill:{@[{neg[x]"\\\\";1b};x;{not": Bad file descriptor"~21#x}]} / kill the task at the other end of a handle 
