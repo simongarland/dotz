@@ -21,3 +21,4 @@ clean:{delete from`CLIENTS where null w,pcz<.z.z-.clients.RETAIN;}
 
 .z.po:{.clients.po[x y;y]}.z.po
 .z.pc:{.clients.pc[x y;y]}.z.pc
+add each key .z.W;
