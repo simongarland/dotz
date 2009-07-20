@@ -5,16 +5,16 @@
 @[value;"\\l logusage.custom.q";::];
 
 o:.Q.opt .z.x;if[count .Q.x;.usage.FILE:hsym`${x[where"\\"=x]:"/";x}first .Q.x]  
-USAGE:([id:`long$()]startz:`datetime$();endz:`datetime$();startw:`long$();endw:`long$();zcmd:`symbol$();a:`int$();u:`symbol$();w:`int$();cmd:();ok:`boolean$();error:`symbol$();data:())
+USAGE:([id:`long$()]startz:`datetime$();endz:`datetime$();zcmd:`symbol$();a:`int$();u:`symbol$();w:`int$();cmd:();ok:`boolean$();error:`symbol$();data:())
 LD:insert;LB:insert
-LA:{x upsert`id`ok`startz`endz`startw`endw!y}
+LA:{x upsert`id`ok`startz`endz!y}
 LE:{x upsert`id`ok`endz`error!y}
 -11!.usage.FILE;
 ip:{`$"."sv string"i"$0x0 vs x}
-USAGE:`id`startz xasc update cmd:`$cmd,date:startz.date,time:startz.time,ms:0^86400000*endz-startz,mdelta:floor .001*endw-startw,ipa:.Q.fu[ip']a,host:.Q.fu[.Q.host']a from 0!USAGE
+USAGE:`id`startz xasc update cmd:`$cmd,date:startz.date,time:startz.time,ms:0^86400000*endz-startz,ipa:.Q.fu[ip']a,host:.Q.fu[.Q.host']a from 0!USAGE
 USAGE:update `s#date,`g#zcmd from USAGE
 if[1=count distinct exec date from USAGE;USAGE:update `s#time from USAGE]
-USAGE:select date,time,ms,mdelta,zcmd,ipa,host,u,w,ok,error,exited:null endz,cmd,data from USAGE
+USAGE:select date,time,ms,zcmd,ipa,host,u,w,ok,error,exited:null endz,cmd,data from USAGE
 EXITED::select indx:i,date,time,zcmd,ipa,host,u,w,error,cmd from USAGE where exited
 EXPENSIVE::`totalms xdesc select totalms,avgms,numcalls,cmd from(0!select totalms:sum ms,avgms:avg ms,numcalls:count i by cmd from USAGE)where totalms>1  
 LOGCONTENTS::exec first each data from USAGE where zcmd in`pg`ps
