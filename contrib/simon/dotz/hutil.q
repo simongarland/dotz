@@ -5,7 +5,7 @@ myxhp:{`${":",x,":",string system"p"}{(x?"<")#x}{(9+first ss[x;"Address: "])_x}`
 httpget:{[host;location] (`$":http://",host)"GET ",location," HTTP/1.1\r\nHost:",host,"\r\n\r\n"} 
 mywhois:{`k`K`o`f`h`pid`port`s`q`ro`w!(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system"p";system"s";.z.q;system"_";.z.w)}
 / hwhois:{`k`K`o`f`h`pid`port`s`q`ro`w!(@[x;"(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system\"p\";system\"s\";.z.q;system\"_\")";(0Nd;0n;(`);(`);(`);0N;0N;0N;0N;0N)],x:abs x)}
-// use h(mywhois;::) h(myhp;::) h(myxhp;::) for remote servers, note the .z.w is the value at the "other end" 
+// use h(mywhois;::) h(myhp;::) h(myxhp;::) h(.Q.w;::) for remote servers, note the .z.w is the value at the "other end" 
 / hvalid:{@[{not 0b~@[neg x;"";0b]};x;0b]}
 / hvalid:{(::)~@[neg abs x;"";0b]}
 hvalid:{(abs x)in key .z.W}
