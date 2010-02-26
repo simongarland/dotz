@@ -5,6 +5,7 @@ if[not`TASKS in system"a";
 	.tasks.COUNTER:10000;
 	.tasks.LASTGRP:20000;
 	TASKS:([nr:`int$()]grp:`int$();startz:`datetime$();endz:`datetime$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();result:())]
+TASKSNR::exec nr from TASKS
 
 \d .taskgrps
 grps:{distinct exec grp from value`TASKS}
