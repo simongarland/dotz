@@ -16,7 +16,7 @@
 USERS:([u:`symbol$()]poweruser:`boolean$();superuser:`boolean$())
 VALIDHOSTPATTERNS:distinct(string .z.h;string .Q.host .z.a;"127.0.0.1";"localhost")except enlist""
 VALIDCMDPATTERNS:("select*";"count*")
-STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`.access.USERS`upsert`set`.access.VALIDHOSTPATTERNS`.access.VALIDCMDPATTERNS`.access.VALIDCMDSYMBOLS`.access.STOPWORDS`.access.adduser`.access.addsuperuser`.access.addpoweruser`.z.pw`.z.pg`.z.ps`.z.pi`.z.ph`.z.pp`USERS`access`.z`parse`eval`.q.parse`.q.eval`.q.system
+STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`.access.USERS`upsert`set`.access.VALIDHOSTPATTERNS`.access.VALIDCMDPATTERNS`.access.VALIDCMDSYMBOLS`.access.STOPWORDS`.access.adduser`.access.addsuperuser`.access.addpoweruser`.z.pw`.z.pg`.z.ps`.z.pi`.z.ph`.z.pp`USERS`access`.z`parse`eval`.q.parse`.q.eval`.q.system`.z.exit`.z.po`.z.pc
 VALIDCMDSYMBOLS:`favicon.ico`,tables`.
 
 / likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
@@ -33,7 +33,7 @@ validcmd:{[u;cmd]
 	/ now only default or poweruser, check symbols
 	tc:type cmd,:();fc:first cmd;if[$[11h=tc;1b;(0h=tc)and -11h=type fc];:fc in VALIDCMDSYMBOLS];
 	wc:words cmd;pu:poweruser u; / else check text 
-	$[not(any$[pu;";{!\\";";{:!"]in cmd)or any STOPWORDS in wc;$[(first wc)in VALIDCMDSYMBOLS;1b;$[pu;likeany[cmd;VALIDCMDPATTERNS];0b]];0b]}
+	$[not(any$[pu;";{!";";{:!\\"]in cmd)or any STOPWORDS in wc;$[(first wc)in VALIDCMDSYMBOLS;1b;$[pu;likeany[cmd;VALIDCMDPATTERNS];0b]];0b]}
 
 vpw:{[x;y]loginvalid[;`pw;x]$[defaultuser x;validhost .z.a;0b]}
 vpg:{loginvalid[;`pg;x]validcmd[.z.u;x]}
