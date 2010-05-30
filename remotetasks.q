@@ -1,35 +1,55 @@
-/ submit remote tasks and local tasks triggered asynchronously, results passed back to this task 
+/ submit remote tasks and local tasks - synchronously or asynchronously,
+/ results passed back to TASKS in this task 
+/ rxa - Remote eXecute Async
+/ rxs - Remote eXecute Sync
+/ lxa - Local eXecute Async
+/ lxs - Local eXecute Sync
+
 \l saveorig.q	
 @[value;"\\l remotetasks.custom.q";::];      
 if[not`TASKS in system"a";
-	.tasks.COUNTER:10000;
-	.tasks.LASTGRP:20000;
-	TASKS:([nr:`int$()]grp:`int$();startz:`datetime$();endz:`datetime$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();result:())]
-TASKSNR::exec nr from TASKS
+	.tasks.LASTNR:10000;
+	TASKS:([nr:`int$()]grp:`symbol$();startz:`datetime$();endz:`datetime$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();result:())]
+TASKNRS::exec nr from TASKS
+TASKGRPS::distinct exec grp from TASKS
 
-\d .taskgrps
+\d .tasks
 grps:{distinct exec grp from value`TASKS}
 nrsfor:{exec nr from value`TASKS where grp in x}
 grp:{[grP;nR] update grp:grP from`TASKS where nr in nR;nR}
-nextgrp:{:.tasks.LASTGRP+:1}
-\d .tasks
+nextnr:{:.tasks.LASTNR+:1}
 k)d2:{!/.+x} / dictionary from 2 columns
-submitgXEQ:{(neg .z.w)$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
-rungXEQ:{(neg .z.w)(`.tasks.localexecute;x)}
 
-submitg:{[w;grp;expr] / ~ w expr
-	nr:COUNTER+:1;w:abs w;
-	`TASKS insert`nr`grp`startz`endz`w`ipa`status`expr`result!(nr;grp;.z.z;0Nz;w;`;`pending;expr;());
-	(neg w)(submitgXEQ;nr;expr);nr}    
-submit:{[w;expr] submitg[w;.taskgrps.nextgrp[];expr]}
-rung:{[w;grp;expr] / ~ w expr
-	nr:COUNTER+:1;w:abs w;
-	`TASKS insert`nr`grp`startz`endz`w`ipa`status`expr`result!(nr;grp;.z.z;0Nz;w;`;`pending;expr;());
-	(neg w)(rungXEQ;nr);nr}    
-run:{[w;expr] rung[w;.taskgrps.nextgrp[];expr]}
+rxagXEQ:{(neg .z.w)$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
+rxsgXEQ:{$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
+lxagXEQ:{(neg .z.w)(`.tasks.localexecute;x)}
+lxsgXEQ:{localexecute x}
+
+addtask:{[nr;w;grp;expr]
+	`TASKS insert`nr`grp`startz`endz`w`ipa`status`expr`result!(nr;grp;.z.z;0Nz;w;`;`pending;expr;());nr}
+
+rxag:{[w;grp;expr] / ~ w expr
+	addtask[nr:nextnr[];w:abs w;grp;expr];
+	(neg w)(rxagXEQ;nr;expr);nr}    
+rxa:{[w;expr] rxag[w;`;expr]}
+
+rxsg:{[w;grp;expr] / ~ w expr
+	addtask[nr:nextnr[];w:abs w;grp;expr];
+	value w(rxsgXEQ;nr;expr);nr}    
+rxs:{[w;expr] rxsg[w;`;expr]}
+
+lxag:{[w;grp;expr] / ~ w expr
+	addtask[nr:nextnr[];w:abs w;grp;expr];
+	(neg w)(lxagXEQ;nr);nr}    
+lxa:{[w;expr] lxag[w;`;expr]}
+
+lxsg:{[w;grp;expr] / ~ w expr
+	addtask[nr:nextnr[];w:abs w;grp;expr];
+	value(lxsgXEQ;nr);nr}    
+lxs:{[w;expr] lxsg[w;`;expr]}
+
 results:{r:d2 select nr,result from value`TASKS where status=`complete,nr in x;
-	if[AUTOCLEAN; delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN];
-	r}
+	if[AUTOCLEAN; delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN];r}
 resultsf:{$[all x in completed[];results x;'`missing.tasks]} / force results
 
 ms:{d2 select nr,86400000*endz-startz from value`TASKS where nr in x}
@@ -52,14 +72,16 @@ clean:{delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN;}
 
 closew:{update status:`fail,endz:.z.z from`TASKS where status=`pending,w in x;x}
 pc:{[result;arg] closew arg;update w:0 from`TASKS where w=arg;result}
+saveonexit:{[result;arg] if[AUTOCLEAN;.tasks.clean[]];if[count value`TASKS;(`$":T",(-3_(string .z.z)except"T:."),".",(string .z.i),".csv")0:","0:select pid:.z.i,nr,grp,startz,ms:86400000*endz-startz,expr from value`TASKS where status=`complete];result}
 
 \d .
 .tasks.complete:{[nR;resulT] TASKS::update result:resulT,endz:.z.z,status:`complete,ipa:.dotz.ipa .z.a from TASKS where nr=nR;}
-.tasks.fail:{[nR;resulT] TASKS::update result:resulT,status:`fail,endz:.z.z,ipa:.dotz.ipa .z.a from TASKS where status=`pending,nr=nR;}
+.tasks.fail:{[nR;resulT] TASKS::update result:resulT,endz:.z.z,status:`fail,ipa:.dotz.ipa .z.a from TASKS where status=`pending,nr=nR;}
 .tasks.localexecute:{[nR] 
-	if[not null ii:first exec i from TASKS where nr=nR,status=`pending;
-		r:@[{(1b;enlist value x)};first exec expr from TASKS where i=ii;{(0b;enlist x)}];
+	if[not null ti:first exec i from TASKS where nr=nR,status=`pending;
+		r:@[{(1b;enlist value x)};first exec expr from TASKS where i=ti;{(0b;enlist x)}];
 		statuS:`fail`complete[first r];	
-		TASKS::update result:1_r,endz:.z.z,status:statuS,ipa:.dotz.ipa .z.a from TASKS where i=ii];}
+		TASKS::update result:1_r,endz:.z.z,status:statuS,ipa:.dotz.ipa .z.a from TASKS where i=ti];}
 
 .z.pc:{.tasks.pc[x y;y]}.z.pc
+.z.exit:{.tasks.saveonexit[x y;y]}.z.exit                                           
