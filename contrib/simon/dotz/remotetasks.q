@@ -9,7 +9,7 @@
 @[value;"\\l remotetasks.custom.q";::];      
 if[not`TASKS in system"a";
 	.tasks.LASTNR:10000;
-	TASKS:([nr:`int$()]grp:`symbol$();startz:`datetime$();endz:`datetime$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();result:())]
+	TASKS:([nr:`int$()]grp:`symbol$();id:`int$();startz:`datetime$();endz:`datetime$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();result:())]
 TASKNRS::exec nr from TASKS
 TASKGRPS::distinct exec grp from TASKS
 
@@ -25,28 +25,28 @@ rxsgXEQ:{$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.comp
 lxagXEQ:{(neg .z.w)(`.tasks.localexecute;x)}
 lxsgXEQ:{localexecute x}
 
-addtask:{[nr;w;grp;expr]
-	`TASKS insert`nr`grp`startz`endz`w`ipa`status`expr`result!(nr;grp;.z.z;0Nz;w;`;`pending;expr;());nr}
+addtask:{[nr;w;grp;id;expr]
+	`TASKS insert`nr`grp`id`startz`endz`w`ipa`status`expr`result!(nr;grp;id;.z.z;0Nz;w;`;`pending;expr;());nr}
 
-rxag:{[w;grp;expr] / ~ w expr
-	addtask[nr:nextnr[];w:abs w;grp;expr];
+rxag:{[w;grp;id;expr] / ~ w expr
+	addtask[nr:nextnr[];w:abs w;grp;id;expr];
 	(neg w)(rxagXEQ;nr;expr);nr}    
-rxa:{[w;expr] rxag[w;`;expr]}
+rxa:{[w;expr] rxag[w;`;0;expr]}
 
-rxsg:{[w;grp;expr] / ~ w expr
-	addtask[nr:nextnr[];w:abs w;grp;expr];
+rxsg:{[w;grp;id;expr] / ~ w expr
+	addtask[nr:nextnr[];w:abs w;grp;id;expr];
 	value w(rxsgXEQ;nr;expr);nr}    
-rxs:{[w;expr] rxsg[w;`;expr]}
+rxs:{[w;expr] rxsg[w;`;0;expr]}
 
-lxag:{[w;grp;expr] / ~ w expr
-	addtask[nr:nextnr[];w:abs w;grp;expr];
+lxag:{[w;grp;id;expr] / ~ w expr
+	addtask[nr:nextnr[];w:abs w;grp;id;expr];
 	(neg w)(lxagXEQ;nr);nr}    
-lxa:{[w;expr] lxag[w;`;expr]}
+lxa:{[w;expr] lxag[w;`;0;expr]}
 
-lxsg:{[w;grp;expr] / ~ w expr
-	addtask[nr:nextnr[];w:abs w;grp;expr];
+lxsg:{[w;grp;id;expr] / ~ w expr
+	addtask[nr:nextnr[];w:abs w;grp;id;expr];
 	value(lxsgXEQ;nr);nr}    
-lxs:{[w;expr] lxsg[w;`;expr]}
+lxs:{[w;expr] lxsg[w;`;0;expr]}
 
 results:{r:d2 select nr,result from value`TASKS where status=`complete,nr in x;
 	if[AUTOCLEAN; delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN];r}
@@ -72,7 +72,9 @@ clean:{delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN;}
 
 closew:{update status:`fail,endz:.z.z from`TASKS where status=`pending,w in x;x}
 pc:{[result;arg] closew arg;update w:0 from`TASKS where w=arg;result}
-saveonexit:{[result;arg] if[AUTOCLEAN;.tasks.clean[]];if[count value`TASKS;(`$":T",(-3_(string .z.z)except"T:."),".",(string .z.i),".csv")0:","0:select pid:.z.i,nr,grp,startz,ms:86400000*endz-startz,expr from value`TASKS where status=`complete];result}
+
+saveonexit:{[result;arg] if[AUTOCLEAN;.tasks.clean[]];if[count value`TASKS;(`$":T",(-3_(string .z.z)except"T:."),".",(string .z.i),".csv")0:","0:update pid:.z.i from select nr,grp,id,startz,ms:86400000*endz-startz from value`TASKS where status=`complete];result}
+saveonexit:{[result;arg] result} / by default don't do anything interesting
 
 \d .
 .tasks.complete:{[nR;resulT] TASKS::update result:resulT,endz:.z.z,status:`complete,ipa:.dotz.ipa .z.a from TASKS where nr=nR;}
