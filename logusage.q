@@ -5,9 +5,9 @@
 
 \d .usage
 logDirect:{[id;zcmd;endz;result;arg;startz] / log complete action
-	if[LEVEL>1;H enlist(`LD;`USAGE;(id;startz;endz;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];1b;`;enlist arg))];result}
+	if[LEVEL>1;H enlist(`LD;`USAGE;(id;.z.i;startz;endz;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];1b;`;enlist arg))];result}
 logBefore:{[id;zcmd;arg;startz] / log non-time info before execution
-	if[LEVEL>1;H enlist(`LB;`USAGE;(id;startz;0Nz;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];0b;`;enlist arg))];}
+	if[LEVEL>1;H enlist(`LB;`USAGE;(id;.z.i;startz;0Nz;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];0b;`;enlist arg))];}
 logAfter:{[id;endz;result;startz] / fill in time info after execution 
 	if[LEVEL>1;H enlist(`LA;`USAGE;(id;1b;startz;endz))];result}
 logError:{[id;endz;error] / fill in error info
