@@ -18,6 +18,7 @@ VALIDHOSTPATTERNS:distinct(string .z.h;string .Q.host .z.a;"127.0.0.1";"localhos
 VALIDCMDPATTERNS:("select*";"count*")
 STOPWORDS:`delete`exit`access`value`save`read0`read1`insert`update`system`.access.USERS`upsert`set`.access.VALIDHOSTPATTERNS`.access.VALIDCMDPATTERNS`.access.VALIDCMDSYMBOLS`.access.STOPWORDS`.access.adduser`.access.addsuperuser`.access.addpoweruser`.z.pw`.z.pg`.z.ps`.z.pi`.z.ph`.z.pp`USERS`access`.z`parse`eval`.q.parse`.q.eval`.q.system`.z.exit`.z.po`.z.pc
 VALIDCMDSYMBOLS:`favicon.ico`,tables`.
+VALIDSIZE:500000000j / 50MB max 
 
 / likeany:{$[count y;$[x like first y;1b;.z.s[x;1_y]];0b]}
 likeany:{0b{$[x;x;y like z]}[;x;]/y}
@@ -28,6 +29,7 @@ superuser:validuser[;0b;1b];poweruser:validuser[;1b;0b];defaultuser:validuser[;0
 loginvalid:{[ok;zcmd;cmd]	
 	if[not ok;H enlist(`LOADINVALIDACCESS;`INVALIDACCESS;(.z.z;zcmd;.z.a;.z.w;.z.u;.dotz.txtC[zcmd;cmd]))];ok}
 validhost:{[za] $[likeany[.dotz.ipa za;VALIDHOSTPATTERNS];1b;likeany["."sv string"i"$0x0 vs za;VALIDHOSTPATTERNS]]}
+validsize:{$[VALIDSIZE>-22!x;x;'`toobig]}
 validcmd:{[u;cmd]
 	if[superuser u;:1b];
 	/ now only default or poweruser, check symbols
@@ -57,6 +59,7 @@ if[()~key .access.FILE;.[.access.FILE;();:;()]]
 .z.pw:{$[.access.vpw[y;z];x[y;z];0b]}.z.pw 
 / .z.po - untouched, .z.pw does the checking 
 / .z.pc - untouched, close is always allowed
+/ .z.pg:{$[.access.vpg[y];.access.validsize x y;'`access]}.z.pg
 .z.pg:{$[.access.vpg[y];x y;'`access]}.z.pg
 .z.ps:{$[.access.vps[y];x y;'`access]}.z.ps
 .z.pi:{$[.access.vpi[y];x y;'`access]}.z.pi
@@ -69,5 +72,6 @@ the maximum time a single interaction can take by setting command line parameter
 -w NNN (where NNN MB is the maximum memory) - q will *EXIT* with wsfull
 reserve memory at startup by doing something like:
 key 260000000 / to reserve 1GB     
+can use -22!x to check size of results (and signal 'toobig) - but only AFTER execution of course
 use .h.uh on http input if need to check for STOPWORDS etc 
 could use .z.po+.z.pc to track clients (.z.a+u+w, .z.z + active) - simplest is to use trackclients.q directly 
