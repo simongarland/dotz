@@ -24,7 +24,8 @@ onlyone:{oki:exec x from select last i by name,hpup from value`SERVERS;
 	delete from`SERVERS where not i in oki;
 	neg count dupw}
 / add a new server for current session 
-addnhwp:{[namE;hpuP;W;privatE] `SERVERS insert(namE;hpuP;W;0;privatE;.z.z);W}
+addnhwp:{[namE;hpuP;W;privatE]
+    if[not W in 0,key .z.W;'"invalid handle"];`SERVERS insert(namE;hpuP;W;0;privatE;.z.z);W}
 addnhp:{[namE;hpuP;privatE] 
 	W:@[{hopen(x;.servers.HOPENTIMEOUT)};hpuP:hsym hpuP;0N];
 	addnhwp[namE;hpuP;W;privatE]}
@@ -46,7 +47,7 @@ addnw:addnwp[;;0b]
 / clear table, doesn't close the handles - do reset close handles[] for that
 reset:init:{delete from`SERVERS}
 / check for valid handles
-validate:{update lastz:.z.z,w:{$[{@[{(::)~(neg x)""};x;0b]}x;x;0N]}each w from`SERVERS where not null w;update hits:0 from`SERVERS where null w;}
+validate:{update lastz:.z.z,w:0N from`SERVERS where not null w,not w in key .z.W;update lastz:.z.z,w:{$[{@[{(::)~(neg x)""};x;0b]}x;x;0N]}each w from`SERVERS where not null w;update hits:0 from`SERVERS where null w;}
 / clean up records for dead handles
 clean:{delete from`SERVERS where null w;}
 / close open handles - watchout if you have a \t'd <retry>!
