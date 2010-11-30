@@ -26,26 +26,19 @@ lxagXEQ:{(neg .z.w)(`.tasks.localexecute;x)}
 lxsgXEQ:{localexecute x}
 
 addtask:{[nr;w;grp;id;expr]
+    if[not w in key .z.W;'"invalid handle"];
 	`TASKS insert`nr`grp`id`startz`endz`w`ipa`status`expr`result!(nr;grp;id;.z.z;0Nz;w;`;`pending;expr;());nr}
 
-rxag:{[w;grp;id;expr] / ~ w expr
-	addtask[nr:nextnr[];w:abs w;grp;id;expr];
-	(neg w)(rxagXEQ;nr;expr);nr}    
+rxag:{[w;grp;id;expr] addtask[nr:nextnr[];w:abs w;grp;id;expr];(neg w)(rxagXEQ;nr;expr);nr}    
 rxa:{[w;expr] rxag[w;`;0;expr]}
 
-rxsg:{[w;grp;id;expr] / ~ w expr
-	addtask[nr:nextnr[];w:abs w;grp;id;expr];
-	value w(rxsgXEQ;nr;expr);nr}    
+rxsg:{[w;grp;id;expr] addtask[nr:nextnr[];w:abs w;grp;id;expr];value w(rxsgXEQ;nr;expr);nr}    
 rxs:{[w;expr] rxsg[w;`;0;expr]}
 
-lxag:{[w;grp;id;expr] / ~ w expr
-	addtask[nr:nextnr[];w:abs w;grp;id;expr];
-	(neg w)(lxagXEQ;nr);nr}    
+lxag:{[w;grp;id;expr] addtask[nr:nextnr[];w:abs w;grp;id;expr];(neg w)(lxagXEQ;nr);nr}    
 lxa:{[w;expr] lxag[w;`;0;expr]}
 
-lxsg:{[w;grp;id;expr] / ~ w expr
-	addtask[nr:nextnr[];w:abs w;grp;id;expr];
-	value(lxsgXEQ;nr);nr}    
+lxsg:{[w;grp;id;expr] addtask[nr:nextnr[];w:abs w;grp;id;expr];value(lxsgXEQ;nr);nr}    
 lxs:{[w;expr] lxsg[w;`;0;expr]}
 
 results:{r:d2 select nr,result from value`TASKS where status=`complete,nr in x;
