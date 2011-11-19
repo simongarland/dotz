@@ -23,7 +23,7 @@ loginvalid:{[ok;zcmd;cmd] if[not ok;H enlist(`LOADINVALIDACCESS;`INVALIDACCESS;(
 validuser:{[zu;pu;su]$[su;exec any(`,zu)in u from USERS where superuser;$[pu;exec any(`,zu)in u from USERS where poweruser or superuser;exec any(`,zu)in u from USERS]]}
 superuser:validuser[;0b;1b];poweruser:validuser[;1b;0b];defaultuser:validuser[;0b;0b]
 validhost:{[za] $[likeany[.dotz.ipa za;HOSTPATTERNS];1b;likeany["."sv string"i"$0x0 vs za;HOSTPATTERNS]]}
-validsize:{$[loginvalid[ok:MAXSIZE>-22!x;y;z];x;'`toobig]}
+validsize:{$[loginvalid[$[superuser .z.u;1b;MAXSIZE>-22!x];y;z];x;'`toobig]}
 
 cmdpt:{$[10h=type x;-5!x;x]}
 cmdtokens:{raze(raze each)over{$[0h=type x;$[(not 0h=type fx)&1=count fx:first x;fx;()],.z.s each x where 0h=type each x;()]}x}
