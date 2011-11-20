@@ -12,10 +12,19 @@
 
 \d .access
 USERS:([u:`symbol$()]poweruser:`boolean$();superuser:`boolean$())
+adduser:{[u;pu;su]USERS,:(u;pu;su);}
+addsuperuser:adduser[;0b;1b];addpoweruser:adduser[;1b;0b];adddefaultuser:adduser[;0b;0b]
+deleteusers:{delete from`.access.USERS where u in x;}
+
+/ *** begin customise (overwrite these defaults in controlaccess.custom.q) 
+addsuperuser .z.u / task owner is superuser
+adddefaultuser ` / allow anonymous users with default access
+adddefaultuser `qcon / allow qcon users with default access
 HOSTPATTERNS:distinct(string .z.h;string .Q.host .z.a;"127.0.0.1";"localhost")except enlist""
-USERTOKENS:(+;*;%;-),`mytokens`foo`goo`hoo
-POWERUSERTOKENS:USERTOKENS,(?;+;-;%;*;=;<;>;in;within;~:;max;min;*:;last;';#:;avg;wavg) 
+USERTOKENS:asc distinct(+;*;%;-),`mytokens`foo`goo`hoo
+POWERUSERTOKENS:asc distinct USERTOKENS,(?;+;-;%;*;=;<;>;in;within;~:;max;min;*:;last;';#:;avg;wavg) 
 MAXSIZE:123456789j / 123MB max - and anyway there's a hard limit of 2G (2.X)
+/ *** end customise 
 
 likeany:{0b{$[x;x;y like z]}[;x;]/y}
 
@@ -40,16 +49,9 @@ vpi:{loginvalid[;`pi;x]$[0=.z.w;1b;superuser .z.u]}
 vph:{loginvalid[;`ph;x]superuser .z.u}
 vpp:{loginvalid[;`pp;x]superuser .z.u}
 
-adduser:{[u;pu;su]USERS,:(u;pu;su);}
-addsuperuser:adduser[;0b;1b];addpoweruser:adduser[;1b;0b];adddefaultuser:adduser[;0b;0b]
-deleteusers:{delete from`.access.USERS where u in x;}
-
-addsuperuser .z.u / task owner is superuser
-adddefaultuser ` / allow anonymous users with default access
-/adddefaultuser `qcon / allow qcon users with default access
 \d .
 @[value;"\\l controlaccess.custom.q";::];
-mytokens:{asc distinct .access.usertokens .z.u}
+mytokens:{.access.usertokens .z.u}
 
 / if logfile doesn't exist create and initialise it
 if[()~key .access.FILE;.[.access.FILE;();:;()]]
