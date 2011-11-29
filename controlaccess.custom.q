@@ -1,8 +1,7 @@
-/ custom access control, see controlaccess.q for defaults 
-/.access.deleteusers .z.u
-/.access.FILE:`:invalidaccess.log;
-/.access.VALIDHOSTPATTERNS:(string .Q.host .z.a;"127.0.0.1";"localhost");
-/.access.VALIDCMDPATTERNS:("select*";"count*");
-/.access.STOPWORDS:`delete`exit`access`insert`update`system;
-/.access.VALIDCMDSYMBOLS:`symbol$();
-/.access.VALIDCMDSYMBOLS,:`report0`report1;
+/addsuperuser .z.u / task owner is superuser
+/adddefaultuser ` / allow anonymous users with default access
+/adddefaultuser `qcon / allow qcon users with default access
+/HOSTPATTERNS:distinct(string .z.h;string .Q.host .z.a;"127.0.0.1";"localhost")except enlist""
+/USERTOKENS:asc distinct(+;*;%;-),`mytokens`foo`goo`hoo
+/POWERUSERTOKENS:asc distinct USERTOKENS,(?;+;-;%;*;=;<;>;in;within;~:;max;min;*:;last;';#:;avg;wavg) 
+/MAXSIZE:123456789j / 123MB max - and anyway there's a hard limit of 2G (2.X)
