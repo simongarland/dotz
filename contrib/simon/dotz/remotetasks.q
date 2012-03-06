@@ -14,8 +14,8 @@ TASKNRS::exec nr from TASKS
 TASKGRPS::distinct exec grp from TASKS
 
 \d .tasks
-grps:{distinct exec grp from value`TASKS}
-nrsfor:{exec nr from value`TASKS where grp in x}
+grps:{distinct exec grp from`TASKS}
+nrsfor:{exec nr from`TASKS where grp in x}
 grp:{[grP;nR] update grp:grP from`TASKS where nr in nR;nR}
 nextnr:{:.tasks.LASTNR+:1}
 k)d2:{!/.+x} / dictionary from 2 columns
@@ -45,22 +45,22 @@ lxsgz:{[w;grp;id;expr;zz] addtask[nr:nextnr[];w:abs w;grp;id;expr;zz];value(lxsg
 lxsg:{[w;grp;id;expr] lxsgz[w;grp;id;expr;.z.z]}    
 lxs:{[w;expr] lxsg[w;`;0;expr]}
 
-results:{r:d2 select nr,result from value`TASKS where status=`complete,nr in x;
+results:{r:d2 select nr,result from`TASKS where status=`complete,nr in x;
 	if[AUTOCLEAN; delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN];r}
 resultsf:{$[all x in completed[];results x;'`missing.tasks]} / force results
 
-ms:{d2 select nr,86400000*endz-startz from value`TASKS where nr in x}
-status:{d2 select nr,status from value`TASKS where nr in x}
-grpsfor:{d2 select nr,grp from value`TASKS where nr in x}
-nrs:{exec nr from value`TASKS}
-completed:{exec nr from value`TASKS where status=`complete}
-failed:{exec nr from value`TASKS where status=`fail}
-cancelled:{exec nr from value`TASKS where status=`cancel}
-pending:{exec nr from value`TASKS where status=`pending}
+ms:{d2 select nr,86400000*endz-startz from`TASKS where nr in x}
+status:{d2 select nr,status from`TASKS where nr in x}
+grpsfor:{d2 select nr,grp from`TASKS where nr in x}
+nrs:{exec nr from`TASKS}
+completed:{exec nr from`TASKS where status=`complete}
+failed:{exec nr from`TASKS where status=`fail}
+cancelled:{exec nr from`TASKS where status=`cancel}
+pending:{exec nr from`TASKS where status=`pending}
 
-chasew:{@[;"1b";0b]peach distinct x;x}
-chase:{chasew exec w from value`TASKS where nr in x,w>0;x}
-flush:{hclose each distinct exec w from value`TASKS where nr in x,w>0;x}
+chasew:{@[;"1b";0b]each distinct x;x}
+chase:{chasew exec w from`TASKS where nr in x,w>0;x}
+flush:{hclose each distinct exec w from`TASKS where nr in x,w>0;x}
 cancel:{update status:`cancel,endz:.z.z from`TASKS where status=`pending,nr in x;x}
 reset:{delete from`TASKS;}
 clean:{delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN;}
@@ -70,7 +70,7 @@ clean:{delete from`TASKS where status<>`pending,endz<.z.z-.tasks.RETAIN;}
 closew:{update status:`fail,endz:.z.z from`TASKS where status=`pending,w in x;x}
 pc:{[result;arg] closew arg;update w:0 from`TASKS where w=arg;result}
 
-saveonexit:{[result;arg] if[AUTOCLEAN;.tasks.clean[]];if[count value`TASKS;(`$":T",(-3_(string .z.z)except"T:."),".",(string .z.i),".csv")0:","0:update pid:.z.i from select nr,grp,id,startz,ms:86400000*endz-startz from value`TASKS where status=`complete];result}
+saveonexit:{[result;arg] if[AUTOCLEAN;.tasks.clean[]];if[count value`TASKS;(`$":T",(-3_(string .z.z)except"T:."),".",(string .z.i),".csv")0:","0:update pid:.z.i from select nr,grp,id,startz,ms:86400000*endz-startz from`TASKS where status=`complete];result}
 saveonexit:{[result;arg] result} / by default don't do anything interesting
 
 \d .

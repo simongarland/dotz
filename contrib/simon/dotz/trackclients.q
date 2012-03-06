@@ -8,8 +8,8 @@ if[not`CLIENTS in system"a";
 	CLIENTS:([w:`int$()]ipa:`symbol$();u:`symbol$();a:`int$();k:`date$();K:`float$();c:`int$();s:`int$();o:`symbol$();f:`symbol$();pid:`int$();pop:`int$();poz:`datetime$();pcz:`datetime$())]
 		
 \d .clients
-handles:{exec w from value`CLIENTS where not null w}
-leaky:{$[INTRUSIVE;`nh xdesc select from(select nh:count i by ipa,pid from value`CLIENTS where not null pop,null pcz) where nh>2;'`no.data]}
+handles:{exec w from`CLIENTS where not null w}
+leaky:{$[INTRUSIVE;`nh xdesc select from(select nh:count i by ipa,pid from`CLIENTS where not null pop,null pcz) where nh>2;'`no.data]}
 po:{[result;arg]
     `CLIENTS upsert(arg;.dotz.ipa .z.a;.z.u;.z.a;0Nd;0n;0N;0N;(`);(`);0N;0N;.z.z;0Nz);
 	if[INTRUSIVE;

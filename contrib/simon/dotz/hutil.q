@@ -1,8 +1,8 @@
 myhp:{`$raze":",'string(.z.h;system"p")} / my `:host:port 
 / hhp:{`$raze":",'string(@[x;".z.h";(`)];@[x:abs x;"\\p";0N])} / `:host:port for handle 
 xip:{{"I"$(x?"<")#x}{(9+first ss[x;"Address: "])_x}`:http://checkip.dyndns.com:8245"GET HTTP/1.1\r\nHost: checkip.dyndns.com:8245\r\n\r\n"} / external IPaddress
-myxhp:{`${":",x,":",string system"p"}{(x?"<")#x}{(9+first ss[x;"Address: "])_x}`:http://checkip.dyndns.com:8245"GET HTTP/1.1\r\nHost: checkip.dyndns.com:8245\r\n\r\n"} / external IPaddress
-httpget:{[host;location] (`$":http://",host)"GET ",location," HTTP/1.1\r\nHost:",host,"\r\n\r\n"} 
+myxhp:{`${":",x,":",string system"p"}{(x?"<")#x}{(9+first ss[x;"Address: "])_x}`:http://checkip.dyndns.com:8245"GET HTTP/1.0\r\nHost: checkip.dyndns.com:8245\r\n\r\n"} / external IPaddress
+httpget:{[host;location] (`$":http://",host)"GET ",location," HTTP/1.0\r\nHost:",host,"\r\n\r\n"} 
 mywhois:{`k`K`o`f`h`pid`port`s`q`ro`w!(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system"p";system"s";.z.q;system"_";.z.w)}
 / hwhois:{`k`K`o`f`h`pid`port`s`q`ro`w!(@[x;"(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system\"p\";system\"s\";.z.q;system\"_\")";(0Nd;0n;(`);(`);(`);0N;0N;0N;0N;0N)],x:abs x)}
 // use h(mywhois;::) h(myhp;::) h(myxhp;::) h(.Q.w;::) for remote servers, note the .z.w is the value at the "other end" 
