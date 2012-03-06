@@ -16,7 +16,7 @@ USAGE:update `s#date,`g#zcmd from USAGE
 if[1=count distinct exec date from USAGE;USAGE:update `s#time from USAGE]
 USAGE:select date,time,ms,zcmd,ipa,host,u,pid,w,ok,error,exited:null endz,cmd,data from USAGE
 EXITED::select indx:i,date,time,zcmd,ipa,host,u,pid,w,error,cmd from USAGE where exited
-EXPENSIVE::`totalms xdesc select totalms,avgms,numcalls,cmd from(0!select totalms:sum ms,avgms:avg ms,numcalls:count i by cmd from USAGE)where totalms>1  
+EXPENSIVE::`totalms xdesc select totalms,avgms,numcalls,cmd from(0!select totalms:sum ms,avgms:avg ms,numcalls:count i by cmd from USAGE)where totalms>.usage.EXPENSIVE
 LOGCONTENTS::exec first each data from USAGE where zcmd in`pg`ps
 show(neg first system"c")sublist USAGE
 

@@ -5,22 +5,22 @@ if[not`SERVERS in system"a";
 	
 \d .servers
 handlefor:{[namE] / roundrobin
-	if[not cr:count r:select w,lastz from value`SERVERS where w>0,name=namE;
+	if[not cr:count r:select w,lastz from`SERVERS where w>0,name=namE;
 		'(`)sv namE,`not`available];
 	if[cr>1;r:`lastz xasc r];
 	W:exec first w from r;
 	update lastz:.z.z,hits:1+hits from`SERVERS where w=W;
 	W}
-names:{asc distinct exec name from value`SERVERS where w>0}
-handles:{distinct exec w from value`SERVERS where w>0}
-down:{distinct select name,hpup from value`SERVERS where null w}
-up:{distinct select name,hpup from value`SERVERS where w>0}
-self:{distinct select name,hpup from value`SERVERS where w=0}
+names:{asc distinct exec name from`SERVERS where w>0}
+handles:{distinct exec w from`SERVERS where w>0}
+down:{distinct select name,hpup from`SERVERS where null w}
+up:{distinct select name,hpup from`SERVERS where w>0}
+self:{distinct select name,hpup from`SERVERS where w=0}
 / save the list of servers currently in use to file x
-savecsv:{x 0:.h.cd select name,hpup,private from value`SERVERS;x}
+savecsv:{x 0:.h.cd select name,hpup,private from`SERVERS;x}
 / force only one of each active name+hpup
-onlyone:{oki:exec x from select last i by name,hpup from value`SERVERS;
-	@[hclose;;0]each dupw:exec w from value`SERVERS where w>0,not i in oki; 
+onlyone:{oki:exec x from select last i by name,hpup from`SERVERS;
+	@[hclose;;0]each dupw:exec w from`SERVERS where w>0,not i in oki; 
 	delete from`SERVERS where not i in oki;
 	neg count dupw}
 / add a new server for current session 
@@ -33,8 +33,9 @@ addnh:addnhp[;;0b]
 / add session behind a handle
 addwp:{[W;privatE]
 	info:`f`h`port!(@[W;"(.z.f;.z.h;system\"p\")";((`);(`);0N)]);
-	if[$[0N~info`port;1b;(`)~info`f];'`unknown];
-	namE:`$last("/"vs string info`f)except enlist""; 
+    if[0N~info`port;'`unknown];
+    namE:`$last("/"vs string info`f)except enlist"";
+    if[0=count namE;namE:`default];
 	hpuP:hsym`$(string info`h),":",string info`port; 
 	addnhwp[namE;hpuP;W;privatE]}
 addw:addwp[;0b]
@@ -57,7 +58,7 @@ loadcsv:{count`SERVERS insert select name,hpup,w,private,lastz,hits from update 
 / or grab a valid list from another task 
 grab:{count`SERVERS insert update lastz:.z.z,w:0N,hits:0 from(x"select from SERVERS where not private")}
 / after getting new servers run retry to open connections if you don't have \t'd <retry>
-retry:{update hits:0,lastz:.z.z,w:@[{hopen(x;.servers.HOPENTIMEOUT)};;0N]peach hpup from`SERVERS where null w;}
+retry:{update hits:0,lastz:.z.z,w:@[{hopen(x;.servers.HOPENTIMEOUT)};;0N]each hpup from`SERVERS where null w;}
 pc:{[result;arg] update hits:0,w:0N,lastz:.z.z from`SERVERS where w=arg;result}
 .z.pc:{.servers.pc[x y;y]}.z.pc
 .z.exit:{if[not y;.servers.savecsv`:trackservers.csv];x y;}.z.exit
