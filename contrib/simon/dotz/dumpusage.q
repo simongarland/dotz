@@ -10,4 +10,5 @@
 .z.pi:{0N!x 0N!y}.z.pi
 .z.ph:{0N!x 0N!y}.z.ph
 .z.pp:{0N!x 0N!y}.z.pp
+.z.ws:{0N!x 0N!y}.z.ws
 .z.exit:{0N!x 0N!y}.z.exit
