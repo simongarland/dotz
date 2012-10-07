@@ -28,7 +28,7 @@ MAXSIZE:123456789j / 123MB max - and anyway there's a hard limit of 2G (2.X)
 
 likeany:{0b{$[x;x;y like z]}[;x;]/y}
 
-loginvalid:{[ok;zcmd;cmd] if[not ok;H enlist(`LOADINVALIDACCESS;`INVALIDACCESS;(.z.i;.z.z;zcmd;.z.a;.z.w;.z.u;.dotz.txtC[zcmd;cmd]))];ok}
+loginvalid:{[ok;zcmd;cmd] if[not ok;H enlist(`LOADINVALIDACCESS;`INVALIDACCESS;(.z.i;.z.p;zcmd;.z.a;.z.w;.z.u;.dotz.txtC[zcmd;cmd]))];ok}
 validuser:{[zu;pu;su]$[su;exec any(`,zu)in u from USERS where superuser;$[pu;exec any(`,zu)in u from USERS where poweruser or superuser;exec any(`,zu)in u from USERS]]}
 superuser:validuser[;0b;1b];poweruser:validuser[;1b;0b];defaultuser:validuser[;0b;0b]
 validhost:{[za] $[likeany[.dotz.ipa za;HOSTPATTERNS];1b;likeany["."sv string"i"$0x0 vs za;HOSTPATTERNS]]}
@@ -48,6 +48,7 @@ vps:{loginvalid[;`ps;x]$[poweruser .z.u;validcmd[.z.u;x];0b]}
 vpi:{loginvalid[;`pi;x]$[0=.z.w;1b;superuser .z.u]}
 vph:{loginvalid[;`ph;x]superuser .z.u}
 vpp:{loginvalid[;`pp;x]superuser .z.u}
+vws:{loginvalid[;`ws;x]defaultuser .z.u} / not clear what/how to restrict yet
 
 \d .
 @[value;"\\l controlaccess.custom.q";::];
@@ -62,6 +63,7 @@ if[()~key .access.FILE;.[.access.FILE;();:;()]]
 /.z.pg:{$[.access.vpg[y];x y;.access.invalidpt y]}.z.pg
 .z.pg:{$[.access.vpg[y];.access.validsize[;`pg.size;y]x y;.access.invalidpt y]}.z.pg
 .z.ps:{$[.access.vps[y];x y;'`access]}.z.ps
+.z.ws:{$[.access.vws[y];x y;'`access]}.z.ws
 .z.pi:{$[.access.vpi[y];x y;.access.invalidpt y]}.z.pi
 .z.ph:{$[.access.vph[y];x y;.h.hn["403 Forbidden";`txt;"Forbidden"]]}.z.ph
 .z.pp:{$[.access.vpp[y];x y;.h.hn["403 Forbidden";`txt;"Forbidden"]]}.z.pp
