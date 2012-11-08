@@ -1,11 +1,11 @@
-/ save the original values in .z.p* so we can <revert> 
+/ set state and save the original values in .z.p* so we can <revert> 
 \d .dotz
 if[not@[value;`SAVED.ORIG;0b]; / onetime save only
 	SAVED.ORIG:1b;
-	IPA:(enlist .z.a)!enlist`;
+    IPA:(.z.a,.Q.addr`localhost)!.z.h,`localhost;
 	ipa:{$[`~r:IPA x;IPA[x]:$[`~r:.Q.host x;`$"."sv string"i"$0x0 vs x;r];r]}; 
-    liveh:{x in key .z.W};
-    livehn:{x in 0Ni,key .z.W};
+    livehx:{y in x,key .z.W}; liveh:livehx(); livehn:livehx 0Ni; liveh0:livehx 0;
+    HOSTPORT:`$":",(string .z.h),":",string system"p";
 	.access.FILE:@[.:;`.access.FILE;`:invalidaccess.log];
 	.clients.AUTOCLEAN:@[.:;`.clients.AUTOCLEAN;1b]; / clean out old records when handling a close 
 	.clients.INTRUSIVE:@[.:;`.clients.INTRUSIVE;0b];

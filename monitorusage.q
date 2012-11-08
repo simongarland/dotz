@@ -1,5 +1,5 @@
 / monitor external (.z.p*) usage of a kdb+ session to session table USAGE
-\l saveorig.q
+\l dotz.q
 if[not`USAGE in system"a";
 	USAGE:([]date:`date$();time:`time$();ms:`float$();zcmd:`symbol$();ipa:`symbol$();u:`symbol$();w:`int$();cmd:();ok:`boolean$();error:`symbol$());
 	USAGE:update `s#date from USAGE]

@@ -1,6 +1,6 @@
 / log external (.z.p* & .z.exit) usage of a kdb+ session to .usage.FILE
 / use <loadusage.q> to load and create table USAGE
-\l saveorig.q
+\l dotz.q
 @[value;"\\l logusage.custom.q";::];
 
 \d .usage

@@ -1,5 +1,5 @@
 / track active servers of a kdb+ session in session table SERVERS
-\l saveorig.q
+\l dotz.q
 if[not`SERVERS in system"a";
 	SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();hits:`int$();private:`boolean$();startp:`timestamp$();lastp:`timestamp$())]
 SERVERHANDLES::distinct exec w from`SERVERS where .dotz.liveh w

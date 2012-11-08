@@ -1,7 +1,7 @@
 / save last command (.z.p*) usage of a kdb+ session to .last
 / disable .z.pi as otherwise that's overwriting everything when you're trying to debug
 / (may want it for qcon though..)
-\l saveorig.q
+\l dotz.q
 
 .z.pw:{r:x[y;z];if[.usage.LEVEL>1;.last.pw.when:.z.p;.last.zcmd:`pw;.last.pw.u:.z.u;.last.pw.w:.z.w;.last.pw.a:.z.a;.last.pw.x:x;.last.pw.y:y;.last.pw.z:z;.last.pw.r:r];r}.z.pw
 .z.po:{r:x y;if[.usage.LEVEL>1;.last.po.when:.z.p;.last.zcmd:`po;.last.po.u:.z.u;.last.po.w:.z.w;.last.po.a:.z.a;.last.po.x:x;.last.po.y:y;.last.po.r:r];r}.z.po

@@ -8,7 +8,7 @@
 / ordinary user would normally only be able to run canned queries
 / poweruser can run canned queries and some sql commands 
 / superuser can do anything
-\l saveorig.q
+\l dotz.q
 
 \d .access
 USERS:([u:`symbol$()]poweruser:`boolean$();superuser:`boolean$())
