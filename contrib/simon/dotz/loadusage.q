@@ -1,7 +1,7 @@
 / load usage external usage (.z.p*) from logfile FILE into USAGE
 / q loadusage.q / for default filename or from logusage.custom.q
 / q loadusage.q FILENAME / to override default 
-\l saveorig.q 
+\l dotz.q 
 @[value;"\\l logusage.custom.q";::];
 
 o:.Q.opt .z.x;if[count .Q.x;.usage.FILE:hsym`${x[where"\\"=x]:"/";x}first .Q.x]  
