@@ -56,7 +56,7 @@ lxsg:{[w;grp;id;expr] lxsgz[w;grp;id;expr;.z.p]}
 lxs:{[w;expr] lxsg[w;`;0;expr]}
 lxs0:lxs 0
 
-results:{ exec result by nr from`TASKS where status=`complete,nr in x}
+results:{exec result by nr from`TASKS where status=`complete,nr in x}
 resultsf:{$[all x in completed[];results x;'`missing.tasks]} / force results
 
 ms:{0.000001*ns x}
