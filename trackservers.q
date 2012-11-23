@@ -14,7 +14,7 @@ handlefor:{[namE] / roundrobin
 	W}
 names:{asc distinct exec name from`SERVERS where .dotz.liveh w}
 unregistered:{except[key .z.W;exec w from`SERVERS]}
-clean:{ if[count w0:exec w from`SERVERS where not .dotz.livehn w;
+clean:{if[count w0:exec w from`SERVERS where not .dotz.livehn w;
         update lastp:.z.p,w:0Ni from`SERVERS where w in w0];
     if[AUTOCLEAN; delete from`SERVERS where not .dotz.liveh w,lastp<.z.p-.servers.RETAIN];}
 / save the list of servers currently in use to file x
