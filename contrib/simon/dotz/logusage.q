@@ -5,11 +5,11 @@
 
 \d .usage
 logDirect:{[id;zcmd;endp;result;arg;startp] / log complete action
-	if[LEVEL>1;H enlist(`LD;`USAGE;(id;.z.i;startp;endp;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];1b;`;enlist arg))];result}
+    if[LEVEL>1;H enlist(`LD;`USAGE;(id;.z.i;startp;endp;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];1b;0Nj;`;enlist arg))];result}
 logBefore:{[id;zcmd;arg;startp] / log non-time info before execution
-    if[LEVEL>1;H enlist(`LB;`USAGE;(id;.z.i;startp;0Np;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];0b;`;enlist arg))];}
+    if[LEVEL>1;H enlist(`LB;`USAGE;(id;.z.i;startp;0Np;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];0b;0Nj;`;enlist arg))];}
 logAfter:{[id;endp;result;startp] / fill in time info after execution 
-	if[LEVEL>1;H enlist(`LA;`USAGE;(id;1b;startp;endp))];result}
+	if[LEVEL>1;H enlist(`LA;`USAGE;(id;1b;startp;endp;-22!result))];result}
 logError:{[id;endp;error] / fill in error info
 	if[LEVEL>0;H enlist(`LE;`USAGE;(id;0b;endp;`$error))];'error}
 / if logfile doesn't exist create and initialise it

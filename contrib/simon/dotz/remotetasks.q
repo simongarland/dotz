@@ -10,7 +10,7 @@
 @[value;"\\l remotetasks.custom.q";::];      
 if[not`TASKS in system"a";
 	.tasks.LASTNR:10000;
-	TASKS:([nr:`int$()]grp:`symbol$();id:`int$();startp:`timestamp$();endp:`timestamp$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();result:())]
+	TASKS:([nr:`int$()]grp:`symbol$();id:`int$();startp:`timestamp$();endp:`timestamp$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();sz:`long$();result:())]
 TASKNRS::exec nr from TASKS
 TASKGRPS::distinct exec grp from TASKS
 
@@ -34,9 +34,9 @@ lxagXEQ:{neg[.z.w](`.tasks.localexecute;x);neg[.z.w][];}
 lxsgXEQ:{localexecute x}
 
 addtask0:{[nr;w;grp;id;expr;zp]
-    `TASKS insert`nr`grp`id`startp`endp`w`ipa`status`expr`result!(nr;grp;id;zp;0Np;w;`;`pending;expr;()); nr}
+    `TASKS insert`nr`grp`id`startp`endp`w`ipa`status`expr`sz`result!(nr;grp;id;zp;0Np;w;`;`pending;expr;0Nj;()); nr}
 addtask:{[nr;w;grp;id;expr;zp]
-    $[.dotz.liveh w;clean[];'"invalid handle"];
+    $[.dotz.liveh w;clean[];'.dotz.err"invalid handle"];
     addtask0[nr;w;grp;id;expr;zp]}
 
 rxagz:{[w;grp;id;expr;zz] addtask[nr:nextnr[];w:abs w;grp;id;expr;zz];neg[w](rxagXEQ;nr;expr;.dotz.HOSTPORT);neg[w][];nr}    
@@ -57,10 +57,11 @@ lxs:{[w;expr] lxsg[w;`;0;expr]}
 lxs0:lxs 0
 
 results:{exec result by nr from`TASKS where status=`complete,nr in x}
-resultsf:{$[all x in completed[];results x;'`missing.tasks]} / force results
+resultsf:{$[all x in completed[];results x;'.dotz.err"missing task results"]} / force results
 
 ms:{0.000001*ns x}
 ns:{exec`long$endp-startp by nr from`TASKS where nr in x}
+sz:{exec sz by nr from`TASKS where nr in x}
 status:{exec status by nr from`TASKS where nr in x}
 
 completed:{exec nr from`TASKS where status=`complete}
@@ -80,13 +81,13 @@ pc:{[result;W] update w:0Ni from`TASKS where w=W; clean[]; result}
 saveonexit:{[result;arg] result} / by default don't do anything interesting
 
 \d .
-.tasks.complete:{[nR;resulT] TASKS::update result:resulT,endp:.z.p,status:`complete,ipa:.dotz.ipa .z.a from TASKS where nr=nR;}
+.tasks.complete:{[nR;resulT] TASKS::update result:resulT,endp:.z.p,status:`complete,ipa:.dotz.ipa .z.a,sz:-22!resulT from TASKS where nr=nR;}
 .tasks.fail:{[nR;resulT] TASKS::update result:resulT,endp:.z.p,status:`fail,ipa:.dotz.ipa .z.a from TASKS where status=`pending,nr=nR;}
 .tasks.localexecute:{[nR] 
 	if[not null ti:first exec i from TASKS where nr=nR,status=`pending;
 		r:@[{(1b;enlist value x)};first exec expr from TASKS where i=ti;{(0b;enlist x)}];
-		statuS:`fail`complete[first r];	
-		TASKS::update result:1_r,endp:.z.p,status:statuS,ipa:.dotz.ipa .z.a from TASKS where i=ti];}
+		sZ:$[`complete=statuS:`fail`complete[first r];-22!1_r;0Nj];	
+        TASKS::update result:1_r,endp:.z.p,status:statuS,ipa:.dotz.ipa .z.a,sz:sZ from TASKS where i=ti];}
 
 .z.pc:{.tasks.pc[x y;y]}.z.pc
 .z.exit:{.tasks.saveonexit[x y;y]}.z.exit                                           

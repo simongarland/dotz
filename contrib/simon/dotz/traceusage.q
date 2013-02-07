@@ -3,7 +3,7 @@
 
 \d .usage
 trace:{[zcmd;endp;result;arg;startp] / record
-    if[LEVEL>1;-1(" ",(string`date$startp)," ",(string`time$startp)," ms:",(string ms:0.000001*endp-startp)," ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," | ",.dotz.txtc[zcmd;arg])];
+    if[LEVEL>1;-1(" ",(string`date$startp)," ",(string`time$startp)," ms:",(string ms:0.000001*endp-startp)," ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," sz: ",(string -22!result)," | ",.dotz.txtc[zcmd;arg])];
 	result}
 tracee:{[zcmd;endp;arg;error] / record error
 	if[LEVEL>0;-1("*",(string`date$endp)," ",(string`time$endp)," (error:", error,") ",(string zcmd)," a:",(string .dotz.ipa .z.a)," u:",(string .z.u)," w:",(string .z.w)," | ",.dotz.txtc[zcmd;arg])];

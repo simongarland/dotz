@@ -8,6 +8,7 @@ hvalid:{(abs x)in key .z.W}
 hall:{key .z.W}
 hclogged:{where 0<count each .z.W}
 hkill:{@[{neg[x]"\\\\";1b};x;{not": Bad file descriptor"~21#x}]} / kill the task at the other end of a handle 
+hkill2:{@[x;"exit 0";{}]}
 htzoffset:{floor 0.5+24*neg .z.z-x".z.Z"} / server timezone offset for handle
 / execute[handles;cmd]
 hdsx0:{{x[]}each{neg[x]({neg[.z.w]value x};y);neg[x][];x}[;y]each x,()} / deferred sync execute, no traps
