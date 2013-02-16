@@ -9,9 +9,9 @@ logDirect:{[id;zcmd;endp;result;arg;startp] / log complete action
 logBefore:{[id;zcmd;arg;startp] / log non-time info before execution
     if[LEVEL>1;H enlist(`LB;`USAGE;(id;.z.i;startp;0Np;zcmd;.z.a;.z.u;.z.w;.dotz.txtC[zcmd;arg];0b;0Nj;`;enlist arg))];}
 logAfter:{[id;endp;result;startp] / fill in time info after execution 
-	if[LEVEL>1;H enlist(`LA;`USAGE;(id;1b;startp;endp;-22!result))];result}
+    if[LEVEL>1;H enlist(`LA;`USAGE;(id;1b;startp;endp;-22!result))];result}
 logError:{[id;endp;error] / fill in error info
-	if[LEVEL>0;H enlist(`LE;`USAGE;(id;0b;endp;`$error))];'error}
+    if[LEVEL>0;H enlist(`LE;`USAGE;(id;0b;endp;`$error))];'error}
 / if logfile doesn't exist create and initialise it
 if[()~key FILE;.[FILE;();:;()]]
 H:hopen FILE;HJ:hcount FILE
@@ -26,4 +26,4 @@ p2:{id:nextid[];logBefore[id;x;z;.z.p];logAfter[id;.z.p;@[y;z;logError[id;.z.p;]
 .z.ws:p2[`ws;.z.ws;];.z.exit:p2[`exit;.z.exit;];
 .z.pg:p2[`pg;.z.pg;];.z.ps:p2[`ps;.z.ps;];.z.pi:p2[`pi;.z.pi;];
 .z.ph:p2[`ph;.z.ph;];.z.pp:p2[`pp;.z.pp;]
- 
+
