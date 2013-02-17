@@ -3,11 +3,13 @@ xip:{{"I"$(x?"<")#x}{(9+first ss[x;"Address: "])_x}`:http://checkip.dyndns.com:8
 xhp:{`${":",x,":",string system"p"}{(x?"<")#x}{(9+first ss[x;"Address: "])_x}`:http://checkip.dyndns.com:8245"GET HTTP/1.0\r\nHost: checkip.dyndns.com:8245\r\n\r\n"} / external `:host:port
 
 sessioninfo:{.Q.w[],`k`K`o`f`h`pid`port`s`q`ro`g!(.z.k;.z.K;.z.o;.z.f;.z.h;.z.i;system"p";system"s";.z.q;system"_";system"g")}
+hostpid:{`host`pid!(.z.h;.z.i)}
 sysinfo:{`cores`os`u1`u5`u15!.z.c,.z.o,("F"$(-5#-4!first system"uptime")0 2 4)}
 
 withw:{((enlist`w)!enlist y),y(x;::)}
+hhostpid:withw hostpid / hhostpid each key .z.W / use to get distinct tasks 
 hsessioninfo:withw sessioninfo
-hsysinfo:withw sysinfo
+hsysinfo:withw sysinfo / hsysinfo each key .z.W / to see which servers are most loaded
 
 httpget:{[host;location] (`$":http://",host)"GET ",location," HTTP/1.0\r\nHost:",host,"\r\n\r\n"} 
 hvalid:{(abs x)in key .z.W}

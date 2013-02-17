@@ -64,7 +64,7 @@ pc:{[result;W] update w:0Ni,lastp:.z.p from`SERVERS where w=W;cleanup[];result}
 \d .
 h4:.servers.handlefor
 hpup4:.servers.hpupfor
-/ if no other timer then go fishing for lost servers every 5 minutes 
+/ if no other timer then go fishing for lost servers every .servers.RETRY 
 if[not system"t";
     .z.ts:{.servers.retry[]};
     system"t ",string .servers.RETRY]

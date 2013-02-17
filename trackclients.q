@@ -40,3 +40,8 @@ pc:{[result;W] update w:0Ni,endp:.z.p from`CLIENTS where w=W;cleanup[];result}
 
 .z.po:{.clients.po[x y;y]}.z.po
 .z.pc:{.clients.pc[x y;y]}.z.pc
+
+/ if no other timer then go fishing for zombie clients every .clients.MAXIDLE 
+if[not system"t";
+    .z.ts:{.clients.cleanup[]};
+    system"t ",string .clients.MAXIDLE]
