@@ -44,4 +44,4 @@ pc:{[result;W] update w:0Ni,endp:.z.p from`CLIENTS where w=W;cleanup[];result}
 / if no other timer then go fishing for zombie clients every .clients.MAXIDLE 
 if[not system"t";
     .z.ts:{.clients.cleanup[]};
-    system"t ",string .clients.MAXIDLE]
+    system"t ",string floor 1e-6*.clients.MAXIDLE]

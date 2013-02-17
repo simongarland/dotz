@@ -10,7 +10,7 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
     .clients.AUTOCLEAN:@[.:;`.clients.AUTOCLEAN;1b]; / clean out old records when handling a close 
     .clients.INTRUSIVE:@[.:;`.clients.INTRUSIVE;0b];
     .clients.RETAIN:@[.:;`.clients.RETAIN;        `long$`timespan$00:05:00]; / 5 minutes
-    .clients.MAXIDLE:@[.:;`.clients.MAXIDLE;          `long$`time$00:15:00]; / 15 minutes
+    .clients.MAXIDLE:@[.:;`.clients.MAXIDLE;      `long$`timespan$00:15:00]; / 15 minutes
     .servers.HOPENTIMEOUT:@[.:;`.servers.HOPENTIMEOUT;`long$`time$00:00:00.500]; / half a second timeout  
     .servers.RETRY:@[.:;`.servers.RETRY;              `long$`time$00:05:00]; / 5 minutes  
     .servers.RETAIN:@[.:;`.servers.RETAIN;        `long$`timespan$00:11:00]; / 11 minutes
