@@ -16,7 +16,7 @@ ACTIVECLIENTS::select from LIVECLIENTS where hits>0
 CLIENTSUMMARY::select w,ipa,u,f,st:startp.second,et:endp.second,lt:lastp.second,hits,sz from CLIENTS
 
 \d .clients
-unregistered:{except[key .z.W;exec w from`CLIENTS]}
+unregistered:{except[key .z.W;exec w from`CLIENTS]} / .clients.addw each unregistered[]
 cleanup:{ / cleanup closed or idle entries 
     if[count w0:exec w from`CLIENTS where not .dotz.livehn w;
         update endp:.z.p,w:0Ni from`CLIENTS where w in w0];

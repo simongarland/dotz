@@ -15,9 +15,9 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
     .servers.RETRY:@[.:;`.servers.RETRY;              `long$`time$00:05:00]; / 5 minutes  
     .servers.RETAIN:@[.:;`.servers.RETAIN;        `long$`timespan$00:11:00]; / 11 minutes
     .servers.AUTOCLEAN:@[.:;`.servers.AUTOCLEAN;1b]; / clean out old records when handling a close 
-    .tasks.AUTOCLEAN:@[.:;`.tasks.AUTOCLEAN;1b]; / clean out old records when handling a close 
+    .tasks.AUTOCLEAN:@[.:;    `.tasks.AUTOCLEAN;1b]; / clean out old records when handling a close 
     .tasks.RETAIN:@[.:;`.tasks.RETAIN;            `long$`timespan$00:05:00]; / 5 minutes
-    .usage.FILE:@[.:;`.usage.FILE;`:usage.log];
+    .usage.FILE:@[.:;`.usage.FILE;  `:usage.log];
     .usage.LEVEL:@[.:;`.usage.LEVEL;2]; / 0 - nothing; 1 - errors only; 2 - all	
     @[value;"\\l saveorig.custom.q";::];
     err:{"dotz: ",x};
