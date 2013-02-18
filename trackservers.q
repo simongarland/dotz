@@ -1,8 +1,9 @@
 / track active servers of a kdb+ session in session table SERVERS
 \l dotz.q
 if[not`SERVERS in system"a";
-    SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();hits:`int$();private:`boolean$();startp:`timestamp$();lastp:`timestamp$())]
-SERVERHANDLES::distinct exec w from`SERVERS where .dotz.liveh w
+    SERVERS:([]name:`symbol$();hpup:`symbol$();w:`int$();hits:`int$();private:`boolean$();startp:`timestamp$();lastp:`timestamp$();endp:`timestamp$())]
+SERVERHANDLES::distinct exec w from SERVERS where .dotz.liveh w
+SERVERSUMMARY::select w,hpup,name,st:startp.second,et:endp.second,lt:lastp.second,hits from SERVERS
 
 \d .servers
 handlefor:{[namE] / roundrobin
@@ -30,7 +31,7 @@ savecsv:{x 0:.h.cd select name,hpup,private from`SERVERS where .dotz.liveh w;x}
 addnhwp:{[namE;hpuP;W;privatE]
     if[not .dotz.liveh W;'.dotz.err"invalid handle"];
     cleanup[];
-    `SERVERS insert(namE;hpuP;W;0i;privatE;.z.p;.z.p);W}
+    `SERVERS insert(namE;hpuP;W;0i;privatE;.z.p;.z.p;0Np);W}
 addnhp:{[namE;hpuP;privatE] 
     W:@[{hopen(x;.servers.HOPENTIMEOUT)};hpuP:hsym hpuP;0Ni];
     addnhwp[namE;hpuP;W;privatE]}
@@ -53,12 +54,12 @@ addnw:addnwp[;;0b]
 reset:init:{delete from`SERVERS}
 checkw:{{x!@[;"1b";0b]each x}exec w from`SERVERS where .dotz.liveh w,w in x}
 / load the servers from disk (csv file previously saved by savecsv)
-loadcsv:{count`SERVERS insert select name,hpup,w,private,startp,lastp,hits from update hpup:hsym each hpup,w:0Ni,hits:0i,startp:.z.p,lastp:.z.p from ("SSB";enlist",")0:x}
+loadcsv:{count`SERVERS insert select name,hpup,w,private,startp,lastp,hits from update hpup:hsym each hpup,w:0Ni,hits:0i,startp:.z.p,lastp:.z.p,endp:0Np from ("SSB";enlist",")0:x}
 / or grab a valid list from another task 
 grab:{count`SERVERS insert update startp:.z.p,lastp:.z.p,w:0Ni,hits:0i from(x"select from SERVERS where not private")}
 / after getting new servers run retry to open connections if you don't have \t'd <retry>
 retry:{update lastp:.z.p,w:@[{hopen(x;.servers.HOPENTIMEOUT)};;0Ni]each hpup from`SERVERS where not .dotz.liveh w;}
-pc:{[result;W] update w:0Ni,lastp:.z.p from`SERVERS where w=W;cleanup[];result}
+pc:{[result;W] update w:0Ni,endp:.z.p from`SERVERS where w=W;cleanup[];result}
 .z.pc:{.servers.pc[x y;y]}.z.pc
 .z.exit:{if[not y;.servers.savecsv`:trackservers.csv];x y;}.z.exit
 \d .
