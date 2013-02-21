@@ -13,6 +13,8 @@ if[not`TASKS in system"a";
     TASKS:([nr:`int$()]grp:`symbol$();id:`int$();startp:`timestamp$();endp:`timestamp$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();sz:`long$();result:())]
 TASKNRS::exec nr from TASKS
 TASKGRPS::distinct exec grp from TASKS
+TASKHANDLES::distinct exec w from TASKS where .dotz.liveh w
+TASKSUMMARY::select nr,grp,id,w,ipa,status,st:startp.second,et:endp.second,ms:1e-6*endp-startp,sz,expr from TASKS
 
 \d .tasks
 getnrsforgrps:{exec nr from`TASKS where grp in x}
