@@ -25,10 +25,9 @@ cleanup:{if[count w0:exec w from`TASKS where not .dotz.liveh0 w,status=`pending;
     if[AUTOCLEAN;delete from`TASKS where status<>`pending,endp<.z.p-.tasks.RETAIN];}
 
 / execute async requests regardless
-/rxagXEQ:{[x;y;z] neg[.z.w]$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)];}
+/rxagXEQ:{neg[.z.w]$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)];neg[.z.w][];}
 / if the client has gone away don't bother to execute the request
-rxagXEQ:{if[.z.w in key .z.W;neg[.z.w]$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]];}
-
+rxagXEQ:{if[.z.w in key .z.W;neg[.z.w]$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]];neg[.z.w][];}
 rxsgXEQ:{$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
 lxagXEQ:{neg[.z.w](`.tasks.localexecute;x);neg[.z.w][];}
 lxsgXEQ:{localexecute x}
