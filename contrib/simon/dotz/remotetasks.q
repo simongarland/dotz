@@ -14,7 +14,7 @@ if[not`TASKS in system"a";
 TASKNRS::exec nr from TASKS
 TASKGRPS::distinct exec grp from TASKS
 TASKHANDLES::distinct exec w from TASKS where .dotz.liveh w
-TASKSUMMARY::select nr,grp,id,w,ipa,status,st:startp.second,et:endp.second,ms:1e-6*endp-startp,sz,expr from TASKS
+TASKSUMMARY::select nr,grp,id,w,ipa,status,st:startp.second,et:endp.second,ms:1e-6*endp-startp,sz from TASKS
 
 \d .tasks
 getnrsforgrps:{exec nr from`TASKS where grp in x}
@@ -27,7 +27,7 @@ cleanup:{if[count w0:exec w from`TASKS where not .dotz.liveh0 w,status=`pending;
 / execute async requests regardless
 /rxagXEQ:{[x;y;z] neg[.z.w]$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)];}
 / if the client has gone away don't bother to execute the request
-rxagXEQ:{[x;y;z] if[.z.w in key .z.W;neg[.z.w]$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]];}
+rxagXEQ:{if[.z.w in key .z.W;neg[.z.w]$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]];}
 
 rxsgXEQ:{$[first result:@[{(1b;enlist value x)};y;{(0b;enlist x)}];(`.tasks.complete;x;1_ result);(`.tasks.fail;x;1_ result)]}
 lxagXEQ:{neg[.z.w](`.tasks.localexecute;x);neg[.z.w][];}
@@ -39,19 +39,19 @@ addtask:{[nr;w;grp;id;expr;zp]
     $[.dotz.liveh w;cleanup[];'.dotz.err"invalid handle"];
     addtask0[nr;w;grp;id;expr;zp]}
 
-rxagz:{[w;grp;id;expr;zz] addtask[nr:nextnr[];w:abs w;grp;id;expr;zz];neg[w](rxagXEQ;nr;expr;.dotz.HOSTPORT);neg[w][];nr}    
+rxagz:{[w;grp;id;expr;zp] addtask[nr:nextnr[];w:abs w;grp;id;expr;zp];neg[w](rxagXEQ;nr;expr);neg[w][];nr}    
 rxag:{[w;grp;id;expr] rxagz[w;grp;id;expr;.z.p]}    
 rxa:{[w;expr] rxag[w;`;0;expr]}
 
-rxsgz:{[w;grp;id;expr;zz] addtask[nr:nextnr[];w:abs w;grp;id;expr;zz];value w(rxsgXEQ;nr;expr);nr}    
+rxsgz:{[w;grp;id;expr;zp] addtask[nr:nextnr[];w:abs w;grp;id;expr;zp];value w(rxsgXEQ;nr;expr);nr}    
 rxsg:{[w;grp;id;expr] rxsgz[w;grp;id;expr;.z.p]}    
 rxs:{[w;expr] rxsg[w;`;0;expr]}
 
-lxagz:{[w;grp;id;expr;zz] addtask[nr:nextnr[];w:abs w;grp;id;expr;zz];neg[w](lxagXEQ;nr);neg[w][];nr}    
+lxagz:{[w;grp;id;expr;zp] addtask[nr:nextnr[];w:abs w;grp;id;expr;zp];neg[w](lxagXEQ;nr);neg[w][];nr}    
 lxag:{[w;grp;id;expr] lxagz[w;grp;id;expr;.z.p]}    
 lxa:{[w;expr] lxag[w;`;0;expr]}
 
-lxsgz:{[w;grp;id;expr;zz] addtask0[nr:nextnr[];w:abs w;grp;id;expr;zz];value(lxsgXEQ;nr);nr}    
+lxsgz:{[w;grp;id;expr;zp] addtask0[nr:nextnr[];w:abs w;grp;id;expr;zp];value(lxsgXEQ;nr);nr}    
 lxsg:{[w;grp;id;expr] lxsgz[w;grp;id;expr;.z.p]}    
 lxs:{[w;expr] lxsg[w;`;0;expr]}
 lxs0:lxs 0
