@@ -1,13 +1,13 @@
 / submit remote tasks and local tasks - synchronously or asynchronously,
-/ results passed back to TASKS in this task 
+/ results passed back to TASKS in this task
 / rxa - Remote eXecute Async
 / rxs - Remote eXecute Sync
 / lxa - Local eXecute Async
 / lxs - Local eXecute Sync
 / it would be a good idea to have -g 1 set, perhaps calling .Q.gc[] after big ps (.z.pc?)
 
-\l dotz.q	
-@[value;"\\l remotetasks.custom.q";::];      
+\l dotz.q
+@[value;"\\l remotetasks.custom.q";::];
 if[not`TASKS in system"a";
     .tasks.LASTNR:10000;
     TASKS:([nr:`int$()]grp:`symbol$();id:`int$();startp:`timestamp$();endp:`timestamp$();w:`int$();ipa:`symbol$();status:`symbol$();expr:();sz:`long$();result:())]
@@ -38,20 +38,20 @@ addtask:{[nr;w;grp;id;expr;zp]
     $[.dotz.liveh w;cleanup[];'.dotz.err"invalid handle"];
     addtask0[nr;w;grp;id;expr;zp]}
 
-rxagz:{[w;grp;id;expr;zp] addtask[nr:nextnr[];w:abs w;grp;id;expr;zp];neg[w](rxagXEQ;nr;expr);neg[w][];nr}    
-rxag:{[w;grp;id;expr] rxagz[w;grp;id;expr;.z.p]}    
+rxagz:{[w;grp;id;expr;zp] addtask[nr:nextnr[];w:abs w;grp;id;expr;zp];neg[w](rxagXEQ;nr;expr);neg[w][];nr}
+rxag:{[w;grp;id;expr] rxagz[w;grp;id;expr;.z.p]}
 rxa:{[w;expr] rxag[w;`;0;expr]}
 
-rxsgz:{[w;grp;id;expr;zp] addtask[nr:nextnr[];w:abs w;grp;id;expr;zp];value w(rxsgXEQ;nr;expr);nr}    
-rxsg:{[w;grp;id;expr] rxsgz[w;grp;id;expr;.z.p]}    
+rxsgz:{[w;grp;id;expr;zp] addtask[nr:nextnr[];w:abs w;grp;id;expr;zp];value w(rxsgXEQ;nr;expr);nr}
+rxsg:{[w;grp;id;expr] rxsgz[w;grp;id;expr;.z.p]}
 rxs:{[w;expr] rxsg[w;`;0;expr]}
 
-lxagz:{[w;grp;id;expr;zp] addtask[nr:nextnr[];w:abs w;grp;id;expr;zp];neg[w](lxagXEQ;nr);neg[w][];nr}    
-lxag:{[w;grp;id;expr] lxagz[w;grp;id;expr;.z.p]}    
+lxagz:{[w;grp;id;expr;zp] addtask[nr:nextnr[];w:abs w;grp;id;expr;zp];neg[w](lxagXEQ;nr);neg[w][];nr}
+lxag:{[w;grp;id;expr] lxagz[w;grp;id;expr;.z.p]}
 lxa:{[w;expr] lxag[w;`;0;expr]}
 
-lxsgz:{[w;grp;id;expr;zp] addtask0[nr:nextnr[];w:abs w;grp;id;expr;zp];value(lxsgXEQ;nr);nr}    
-lxsg:{[w;grp;id;expr] lxsgz[w;grp;id;expr;.z.p]}    
+lxsgz:{[w;grp;id;expr;zp] addtask0[nr:nextnr[];w:abs w;grp;id;expr;zp];value(lxsgXEQ;nr);nr}
+lxsg:{[w;grp;id;expr] lxsgz[w;grp;id;expr;.z.p]}
 lxs:{[w;expr] lxsg[w;`;0;expr]}
 lxs0:lxs 0
 
@@ -82,11 +82,11 @@ saveonexit:{[result;arg] result} / by default don't do anything interesting
 \d .
 .tasks.complete:{[nR;resulT] TASKS::update result:resulT,endp:.z.p,status:`complete,ipa:.dotz.ipa .z.a,sz:-22!resulT from TASKS where nr=nR;}
 .tasks.fail:{[nR;resulT] TASKS::update result:resulT,endp:.z.p,status:`fail,ipa:.dotz.ipa .z.a from TASKS where status=`pending,nr=nR;}
-.tasks.localexecute:{[nR] 
+.tasks.localexecute:{[nR]
     if[not null ti:first exec i from TASKS where nr=nR,status=`pending;
         r:@[{(1b;enlist value x)};first exec expr from TASKS where i=ti;{(0b;enlist x)}];
-        sZ:$[`complete=statuS:`fail`complete[first r];-22!1_r;0Nj];	
+        sZ:$[`complete=statuS:`fail`complete[first r];-22!1_r;0Nj];
         TASKS::update result:1_r,endp:.z.p,status:statuS,ipa:.dotz.ipa .z.a,sz:sZ from TASKS where i=ti];}
 
 .z.pc:{.tasks.pc[x y;y]}.z.pc
-.z.exit:{.tasks.saveonexit[x y;y]}.z.exit                                           
+.z.exit:{.tasks.saveonexit[x y;y]}.z.exit

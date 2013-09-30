@@ -1,10 +1,10 @@
 / load usage external usage (.z.p*) from logfile FILE into USAGE
 / q loadusage.q / for default filename or from logusage.custom.q
-/ q loadusage.q FILENAME / to override default 
-\l dotz.q 
+/ q loadusage.q FILENAME / to override default
+\l dotz.q
 @[value;"\\l logusage.custom.q";::];
 
-o:.Q.opt .z.x;if[count .Q.x;.usage.FILE:hsym`${x[where"\\"=x]:"/";x}first .Q.x]  
+o:.Q.opt .z.x;if[count .Q.x;.usage.FILE:hsym`${x[where"\\"=x]:"/";x}first .Q.x]
 USAGE:([id:`long$()]pid:`int$();startp:`timestamp$();endp:`timestamp$();zcmd:`symbol$();a:`int$();u:`symbol$();w:`int$();cmd:();ok:`boolean$();sz:`long$();error:`symbol$();data:())
 LD:insert;LB:insert
 LA:{x upsert`id`ok`startp`endp`sz!y}

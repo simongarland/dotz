@@ -1,12 +1,12 @@
 / control external (.z.p*) access to  a kdb+ session, log access errors to file
 / use <loadinvalidaccess.q> to load and display table INVALIDACCESS
 / control access (in customaccess.q) by:
-/ setting .access.HOSTPATTERNS - list of allowed hoststring patterns (";"vs ...) 
+/ setting .access.HOSTPATTERNS - list of allowed hoststring patterns (";"vs ...)
 / setting .access.USERTOKENS/POWERUSERTOKENS - list of allowed k tokens (use -5!)
-/ adding rows to .access.USERS for .z.u matches 
+/ adding rows to .access.USERS for .z.u matches
 / modify the default values using file controlaccess.custom.q (loaded at end if found)
 / ordinary user would normally only be able to run canned queries
-/ poweruser can run canned queries and some sql commands 
+/ poweruser can run canned queries and some sql commands
 / superuser can do anything
 \l dotz.q
 
@@ -16,15 +16,15 @@ adduser:{[u;pu;su]USERS,:(u;pu;su);}
 addsuperuser:adduser[;0b;1b];addpoweruser:adduser[;1b;0b];adddefaultuser:adduser[;0b;0b]
 deleteusers:{delete from`.access.USERS where u in x;}
 
-/ *** begin customise (overwrite these defaults in controlaccess.custom.q) 
+/ *** begin customise (overwrite these defaults in controlaccess.custom.q)
 addsuperuser .z.u / task owner is superuser
 adddefaultuser ` / allow anonymous users with default access
 adddefaultuser `qcon / allow qcon users with default access
 HOSTPATTERNS:distinct(string .z.h;string .Q.host .z.a;"127.0.0.1";"localhost")except enlist""
 USERTOKENS:asc distinct(+;*;%;-),`mytokens`foo`goo`hoo
-POWERUSERTOKENS:asc distinct USERTOKENS,(?;+;-;%;*;=;<;>;in;within;~:;max;min;*:;last;';#:;avg;wavg) 
+POWERUSERTOKENS:asc distinct USERTOKENS,(?;+;-;%;*;=;<;>;in;within;~:;max;min;*:;last;';#:;avg;wavg)
 MAXSIZE:123456789j / 123MB max - and anyway there's a hard limit of 2G (2.X)
-/ *** end customise 
+/ *** end customise
 
 likeany:{0b{$[x;x;y like z]}[;x;]/y}
 
@@ -57,8 +57,8 @@ mytokens:{.access.usertokens .z.u}
 / if logfile doesn't exist create and initialise it
 if[()~key .access.FILE;.[.access.FILE;();:;()]]
 .access.H:hopen .access.FILE
-.z.pw:{$[.access.vpw[y;z];x[y;z];0b]}.z.pw 
-/ .z.po - untouched, .z.pw does the checking 
+.z.pw:{$[.access.vpw[y;z];x[y;z];0b]}.z.pw
+/ .z.po - untouched, .z.pw does the checking
 / .z.pc - untouched, close is always allowed
 /.z.pg:{$[.access.vpg[y];x y;.access.invalidpt y]}.z.pg
 .z.pg:{$[.access.vpg[y];.access.validsize[;`pg.size;y]x y;.access.invalidpt y]}.z.pg
@@ -73,4 +73,4 @@ note that you can put global restrictions on the amount of memory used, and
 the maximum time a single interaction can take by setting command line parameters:
 -T NNN (where NNN seconds is the maximum duration) - q will signal 'stop
 -w NNN (where NNN MB is the maximum memory) - q will *EXIT* with wsfull
-could use .z.po+.z.pc to track clients (.z.a+u+w, .z.z + active) - simplest is to use trackclients.q directly 
+could use .z.po+.z.pc to track clients (.z.a+u+w, .z.z + active) - simplest is to use trackclients.q directly
