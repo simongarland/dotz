@@ -21,7 +21,7 @@ if[not@[value;`SAVED.ORIG;0b]; / onetime save only
     .usage.LEVEL:@[.:;`.usage.LEVEL;2]; / 0 - nothing; 1 - errors only; 2 - all
     @[value;"\\l saveorig.custom.q";::];
     err:{"dotz: ",x};
-    txt:{[width;zcmd;arg]t:$[10=abs type arg;arg;-3!arg];if[zcmd in`ph`pp;t:.h.uh t];$[width<count t:t except"\n";(15#t),"..",(17-width)#t;t]};
+    txt:{[width;zcmd;arg]t:$[10=abs type arg;arg,();-3!arg];if[zcmd in`ph`pp;t:.h.uh t];$[width<count t:t except"\n";(15#t),"..",(17-width)#t;t]};
     txtc:txt[neg 60-last system"c"];txtC:txt[neg 60-last system"C"];
     pzlist:` sv'`.z,'`pw`po`pc`pg`ps`pi`ph`pp`ws`exit;
     .dotz.undef:pzlist where not @[{not(::)~value x};;0b] each pzlist;
