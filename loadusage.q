@@ -5,7 +5,7 @@
 @[value;"\\l logusage.custom.q";::];
 
 o:.Q.opt .z.x;if[count .Q.x;.usage.FILE:hsym`${x[where"\\"=x]:"/";x}first .Q.x]
-USAGE:([id:`long$()]pid:`int$();startp:`timestamp$();endp:`timestamp$();zcmd:`symbol$();a:`int$();u:`symbol$();w:`int$();cmd:();ok:`boolean$();sz:`long$();error:`symbol$();data:())
+USAGE:([id:`u#`long$()]pid:`int$();startp:`timestamp$();endp:`timestamp$();zcmd:`symbol$();a:`int$();u:`symbol$();w:`int$();cmd:();ok:`boolean$();sz:`long$();error:`symbol$();data:())
 LD:insert;LB:insert
 LA:{x upsert`id`ok`startp`endp`sz!y}
 LE:{x upsert`id`ok`endp`error!y}
@@ -16,7 +16,6 @@ USAGE:update`s#date,`g#zcmd from USAGE
 if[1=count distinct exec date from USAGE;USAGE:update`s#time from USAGE]
 USAGE:select date,time,ms,zcmd,ipa,host,u,pid,w,ok,sz,error,exited:null endp,cmd,data from USAGE
 EXITED::select indx:i,date,time,zcmd,ipa,host,u,pid,w,error,cmd from USAGE where exited
-EXPENSIVE::`totalms xdesc select totalms,avgms,avgsz,numcalls,cmd from(0!select avgsz:avg sz,totalms:sum ms,avgms:avg ms,numcalls:count i by cmd from USAGE)where totalms>.usage.EXPENSIVE
 LOGCONTENTS::exec first each data from USAGE where zcmd in`pg`ps
 show(neg first system"c")sublist USAGE
 
